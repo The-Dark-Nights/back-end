@@ -1,9 +1,16 @@
 # Devigation - Back End
 
+## Package Structure
+- CQRS 패턴 
+- DIP을 통한 다른 도메인 간 클래스 및 메서드 사용
+
 ## 프로젝트 일정
 ### 1주차
 - 정지원
   - 회원
+    - Spring Security
+    - OAuth2 github login
+    - JWT
 - 진용민
   - 게시글 , 사진
 - 전태현
