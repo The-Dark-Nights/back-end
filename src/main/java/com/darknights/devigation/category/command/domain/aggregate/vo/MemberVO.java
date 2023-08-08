@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class MemberVO {
     @Column(name = "member_id")
-    private long id;
+    private long memberId;
 
     public MemberVO(long id){
-        this.id =id;
+        this.memberId =id;
     }
 }
