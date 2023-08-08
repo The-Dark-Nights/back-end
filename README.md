@@ -7,7 +7,7 @@
 ## 프로젝트 일정
 ### 1주차
 - 정지원
-  - 회원
+  - 회원 도메인 및 인증
     - Spring Security
     - OAuth2 github login
     - JWT
@@ -30,7 +30,7 @@
 
 
 
-### 💻 팀원 소개
+## 💻 팀원 소개
 
 <table>
   <tr>
