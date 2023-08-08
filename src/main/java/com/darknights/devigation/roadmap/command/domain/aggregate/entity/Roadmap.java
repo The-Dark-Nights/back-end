@@ -1,6 +1,7 @@
 package com.darknights.devigation.roadmap.command.domain.aggregate.entity;
 
 
+import com.darknights.devigation.roadmap.command.domain.aggregate.vo.MemberVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,6 +21,10 @@ public class Roadmap {
 
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
+    @Embedded
+    private MemberVO memberId;
 
     @CreatedDate
     @Column(name = "created_date")
