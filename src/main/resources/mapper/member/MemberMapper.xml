@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.darknights.devigation.member.query.domain.repository.MemberMapper">
+    <resultMap id="QueryMemberMap" type="com.darknights.devigation.member.query.domain.aggregate.entity.QueryMember">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="AccessToken" column="access_token"/>
+        <result property="UID" column="uid"/>
+        <result property="profileImage" column="profile_image"/>
+        <result property="platform" column="platform"/>
+        <result property="role" column="role"/>
+        <result property="createdDate" column="created_date"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="QueryMemberMap">
+        SELECT *
+        FROM
+            MEMBER_TB
+        order by
+            created_date DESC
+    </select>
+
+    <select id="findById" resultMap="QueryMemberMap">
+        SELECT *
+        FROM
+            MEMBER_TB
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="findByUID" resultMap="QueryMemberMap">
+        SELECT *
+        FROM
+            MEMBER_TB
+        WHERE
+            uid = #{uid}
+    </select>
+
+    <select id="findByAccessToken" resultMap="QueryMemberMap">
+        SELECT *
+        FROM
+            MEMBER_TB
+        WHERE
+            access_token = #{accessToken}
+    </select>
+</mapper>
