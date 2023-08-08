@@ -12,4 +12,8 @@ import javax.persistence.Embeddable;
 public class MemberVO {
     @Column(name = "member_id")
     private long id;
+
+    public MemberVO(long id){
+        this.id =id;
+    }
 }
