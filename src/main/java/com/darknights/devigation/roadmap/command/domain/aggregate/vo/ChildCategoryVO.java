@@ -12,9 +12,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class ChildCategoryVO {
     @Column(name = "child_category_id")
-    private long childCategoryId;
+    private long id;
 
     public ChildCategoryVO(long id){
-        this.childCategoryId =id;
+        this.id =id;
     }
 }

@@ -1,6 +1,8 @@
 package com.darknights.devigation.roadmap.command.domain.aggregate.entity;
 
 
+import com.darknights.devigation.roadmap.command.domain.aggregate.vo.ChildCategoryVO;
+import com.darknights.devigation.roadmap.command.domain.aggregate.vo.ParentCategoryVO;
 import com.darknights.devigation.roadmap.command.domain.aggregate.vo.RoadmapVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,11 @@ public class RoadmapCategory {
 
     @Column(nullable = false)
     private String position;
+
+    @Embedded
+    private ChildCategoryVO childCategoryId;
+
+    @Embedded
+    private ParentCategoryVO parentCategoryId;
 
 }
