@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "CATEGOTY_TB")
 @Getter
 @NoArgsConstructor
 public class Category {
