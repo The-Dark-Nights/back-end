@@ -22,7 +22,7 @@ public class Member {
     private String name;
 
     @Column(nullable = false, name = "access_token")
-    private String AccessToken;
+    private String accessToken;
 
     @Column(nullable = false, name = "uid")
     private Long UID;
@@ -46,7 +46,7 @@ public class Member {
 
     public Member(String name, String accessToken, Long UID, String profileImage, PlatformEnum platform, Role role) {
         this.name = name;
-        AccessToken = accessToken;
+        this.accessToken = accessToken;
         this.UID = UID;
         this.profileImage = profileImage;
         this.platform = platform;

@@ -5,7 +5,7 @@
     <resultMap id="QueryMemberMap" type="com.darknights.devigation.member.query.domain.aggregate.entity.QueryMember">
         <id property="id" column="id" />
         <result property="name" column="name"/>
-        <result property="AccessToken" column="access_token"/>
+        <result property="accessToken" column="access_token"/>
         <result property="UID" column="uid"/>
         <result property="profileImage" column="profile_image"/>
         <result property="platform" column="platform"/>
