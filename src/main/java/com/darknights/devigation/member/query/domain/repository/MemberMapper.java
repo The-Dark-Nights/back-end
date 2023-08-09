@@ -11,7 +11,7 @@ public interface MemberMapper {
 
     QueryMember findById(long id);
 
-    QueryMember findByUID(long uid);
+    QueryMember findByUID(String uid);
 
     QueryMember findByAccessToken(String accessToken);
 }
