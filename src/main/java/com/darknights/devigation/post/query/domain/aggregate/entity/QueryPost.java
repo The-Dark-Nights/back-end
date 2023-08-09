@@ -1,6 +1,7 @@
-package com.darknights.devigation.post.query.domain.entity;
+package com.darknights.devigation.post.query.domain.aggregate.entity;
 
-import com.darknights.devigation.post.command.domain.aggregate.vo.MemberVO;
+import com.darknights.devigation.post.query.domain.aggregate.vo.CategoryVO;
+import com.darknights.devigation.roadmap.query.domain.aggregate.vo.MemberVO;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -17,6 +18,9 @@ public class QueryPost {
 
     @Embedded
     private MemberVO memberId;
+
+    @Embedded
+    private CategoryVO categoryId;
 
     @Column(nullable = false, name = "content", columnDefinition = "TEXT")
     private String content;
