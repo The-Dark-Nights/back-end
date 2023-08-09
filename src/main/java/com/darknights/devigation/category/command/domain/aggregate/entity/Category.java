@@ -21,4 +21,25 @@ public class Category {
 
     @Embedded
     private MemberVO memberId;
+
+
+    public Category(long memberId,String name){
+        this.memberId = new MemberVO(memberId);
+        this.name =name;
+    }
+
+    public Category(long id, long memberId,String name){
+        this.id = id;
+        this.memberId = new MemberVO(memberId);
+        this.name =name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMemberId(MemberVO memberId) {
+        this.memberId = memberId;
+    }
 }
+
