@@ -22,10 +22,10 @@ public class QueryMember {
     private String name;
 
     @Column(nullable = false, name = "access_token")
-    private String AccessToken;
+    private String accessToken;
 
     @Column(nullable = false, name = "uid")
-    private Long UID;
+    private String UID;
 
     @Column(length = 300, name = "profile_image", nullable = false)
     private String profileImage;
