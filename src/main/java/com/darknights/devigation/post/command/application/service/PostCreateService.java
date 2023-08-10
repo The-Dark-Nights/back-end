@@ -8,7 +8,6 @@ import com.darknights.devigation.post.command.domain.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 
 @Service
 public class PostCreateService {
@@ -19,11 +18,10 @@ public class PostCreateService {
         this.postRepository=postRepository;
     }
 
-    @Transactional
     public Post createPost(CreatePostDTO createPostDTO){
         MemberVO memberId = MemberVO.builder().memberId(createPostDTO.getMemberId()).build();
         CategoryVO categoryId=CategoryVO.builder().categoryId(createPostDTO.getCategoryId()).build();
 
-        return postRepository.save(new Post(memberId,categoryId, createPostDTO.getContent()));
+        return postRepository.save(new Post(createPostDTO.getTitle(),memberId,categoryId, createPostDTO.getContent(),createPostDTO.isPublished()));
     }
 }

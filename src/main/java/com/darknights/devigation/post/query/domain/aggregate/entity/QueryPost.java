@@ -16,6 +16,9 @@ public class QueryPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String title;
+
     @Embedded
     private MemberVO memberId;
 
@@ -27,4 +30,7 @@ public class QueryPost {
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Column
+    private boolean published;
 }

@@ -1,57 +1,38 @@
-package com.darknights.devigation.post.command.domain.aggregate.entity;
+package com.darknights.devigation.post.command.application.dto;
 
-import com.darknights.devigation.post.command.application.dto.UpdatePostDTO;
+
+import com.darknights.devigation.post.command.domain.aggregate.entity.Post;
 import com.darknights.devigation.post.command.domain.aggregate.vo.CategoryVO;
 import com.darknights.devigation.post.command.domain.aggregate.vo.MemberVO;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name="Post")
-@Table(name="POST_TB")
 @Getter
-@NoArgsConstructor
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UpdatePostDTO {
     private Long id;
-
-    @Column
     private String title;
-
-    @Embedded
-    private MemberVO memberId;
-
-    @Embedded
-    private CategoryVO categoryId;
-
-    @Column(nullable = false, name = "content", columnDefinition = "TEXT")
+    private Long memberId;
+    private Long categoryId;
     private String content;
-    @CreatedDate
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
-
-    @Column
     private boolean published;
 
-    public Post(String title,MemberVO memberId, CategoryVO categoryId, String content, boolean published) {
-        this.title=title;
-        this.memberId = memberId;
-        this.categoryId = categoryId;
+    public UpdatePostDTO(Long id, String title, MemberVO memberId, CategoryVO categoryId, String content, LocalDateTime createdDate, boolean published) {
+        this.id = id;
+        this.title = title;
+        this.memberId = memberId.getId();
+        this.categoryId = categoryId.getId();
         this.content = content;
-        this.createdDate = LocalDateTime.now();
-        this.published=published;
+        this.createdDate = createdDate;
+        this.published = published;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setCategoryId(CategoryVO categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -70,7 +51,7 @@ public class Post {
     // 삭제 test시 출력용 toString 메소드
     @Override
     public String toString() {
-        return "Post{" +
+        return "UpdatePostDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", memberId=" + memberId +
@@ -80,4 +61,5 @@ public class Post {
                 ", published=" + published +
                 '}';
     }
+
 }
