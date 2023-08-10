@@ -2,9 +2,9 @@ package com.darknights.devigation.post.command.service;
 
 import com.darknights.devigation.post.command.application.dto.CreatePostDTO;
 import com.darknights.devigation.post.command.application.dto.UpdatePostDTO;
-import com.darknights.devigation.post.command.application.service.PostCreateService;
-import com.darknights.devigation.post.command.application.service.PostDeleteService;
-import com.darknights.devigation.post.command.application.service.PostUpdateService;
+import com.darknights.devigation.post.command.application.service.CreatePostService;
+import com.darknights.devigation.post.command.application.service.DeletePostService;
+import com.darknights.devigation.post.command.application.service.UpdatePostService;
 import com.darknights.devigation.post.command.domain.aggregate.entity.Post;
 import com.darknights.devigation.post.command.domain.repository.PostRepository;
 import org.junit.jupiter.api.Assertions;
@@ -25,13 +25,13 @@ import java.util.stream.Stream;
 public class PostCRUDTests {
 
     @Autowired
-    private PostCreateService postCreateService;
+    private CreatePostService createPostService;
 
     @Autowired
-    private PostUpdateService postUpdateService;
+    private UpdatePostService updatePostService;
 
     @Autowired
-    private PostDeleteService postDeleteService;
+    private DeletePostService postDeleteService;
 
     @Autowired
     private PostRepository postRepository;
@@ -48,14 +48,6 @@ public class PostCRUDTests {
         );
     }
 
-    private static Stream<Arguments> updatePost() {
-        return Stream.of(
-                Arguments.of(
-
-                )
-        );
-    }
-
     @DisplayName("게시글 작성 여부 확인")
     @ParameterizedTest
     @MethodSource("createPost")
@@ -67,7 +59,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post resultPost = postCreateService.createPost(post);
+        Post resultPost = createPostService.createPost(post);
         // 삭제
         System.out.println("resultPost = " + resultPost);
         Assertions.assertNotNull(resultPost);
@@ -88,7 +80,8 @@ public class PostCRUDTests {
 //
 //        // 질문 여기서 updatePostDTO를 수정했는데 createPost까지 바뀌는 이유는???
 //        // 영속성 컨텍스트가 정확히 어떻게 작동되는지 이해하지 못하겠다. 동일성 보장의 문제인가?? + 이 메소드에서 commit이 되는 시점은???
-//        Post createPost = postCreateService.createPost(post);
+//        // DTO는 앤티티 객체가 아니야! 즉 entity객체인 createPost를 update과정에서 가져오기 때문에 값이 바뀌었던 것!!!!
+//        Post createPost = createPostService.createPost(post);
 //        System.out.println("수정 전 createPost = " + createPost);
 //        UpdatePostDTO updatePostDTO=new UpdatePostDTO(
 //                createPost.getId(),
@@ -100,7 +93,7 @@ public class PostCRUDTests {
 //                createPost.isPublished()
 //        );
 //        updatePostDTO.setTitle("수정된 게시글 제목입니다.");
-//        postUpdateService.updatePost(updatePostDTO);
+//        updatePostService.updatePost(updatePostDTO);
 //        Optional<Post> updatePost=postRepository.findById(updatePostDTO.getId());
 //        System.out.println("createPost = " + createPost);
 //        System.out.println("updatePost = " + updatePost);
@@ -118,7 +111,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = postCreateService.createPost(post);
+        Post createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -133,7 +126,7 @@ public class PostCRUDTests {
         String modifyTitle="";
 //        String modifyTitle=null;
         updatePostDTO.setTitle(modifyTitle);
-        postUpdateService.updatePost(updatePostDTO);
+        updatePostService.updatePost(updatePostDTO);
         Optional<Post> updatePost = postRepository.findById(updatePostDTO.getId());
         Assertions.assertNotEquals(modifyTitle, updatePost.get().getTitle());
     }
@@ -150,7 +143,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = postCreateService.createPost(post);
+        Post createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -164,7 +157,7 @@ public class PostCRUDTests {
         // content를 다르게 한 후 값이 바뀌는지 확인
         String modifyContent="게시물 내용이 수정되었습니다.";
         updatePostDTO.setContent(modifyContent);
-        postUpdateService.updatePost(updatePostDTO);
+        updatePostService.updatePost(updatePostDTO);
         Optional<Post> updatePost = postRepository.findById(updatePostDTO.getId());
         System.out.println("updatePost = " + updatePost);
         Assertions.assertEquals(modifyContent, updatePost.get().getContent());
@@ -182,7 +175,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = postCreateService.createPost(post);
+        Post createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -196,7 +189,7 @@ public class PostCRUDTests {
         // published를 false로 바꾼 후 게시날짜가 바뀌지 않는 것 확인
         LocalDateTime modifyTime=createPost.getCreatedDate();
         updatePostDTO.setPublished(false);
-        postUpdateService.updatePost(updatePostDTO);
+        updatePostService.updatePost(updatePostDTO);
         Optional<Post> updatePost = postRepository.findById(updatePostDTO.getId());
         Assertions.assertEquals(modifyTime, updatePost.get().getCreatedDate());
     }

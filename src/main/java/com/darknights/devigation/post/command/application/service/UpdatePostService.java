@@ -13,11 +13,11 @@ import java.util.Optional;
 
 
 @Service
-public class PostUpdateService {
+public class UpdatePostService {
     private final PostRepository postRepository;
 
     @Autowired
-    public PostUpdateService(PostRepository postRepository) {
+    public UpdatePostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

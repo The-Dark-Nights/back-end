@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class PostCreateService {
+public class CreatePostService {
     private final PostRepository postRepository;
 
     @Autowired
-    public PostCreateService(PostRepository postRepository){
+    public CreatePostService(PostRepository postRepository){
         this.postRepository=postRepository;
     }
 
