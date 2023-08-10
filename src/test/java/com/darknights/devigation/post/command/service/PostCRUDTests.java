@@ -48,25 +48,6 @@ public class PostCRUDTests {
         );
     }
 
-    @DisplayName("게시글 작성 여부 확인")
-    @ParameterizedTest
-    @MethodSource("createPost")
-    void createPostTest(String title, Long memberId, Long categoryId, String contents, boolean published) {
-        CreatePostDTO post = new CreatePostDTO();
-        post.setTitle(title);
-        post.setMemberId(memberId);
-        post.setCategoryId(categoryId);
-        post.setContent(contents);
-        post.setPublished(published);
-
-        Post resultPost = createPostService.createPost(post);
-        // 삭제
-        System.out.println("resultPost = " + resultPost);
-        Assertions.assertNotNull(resultPost);
-        // 필기 db에는 저장되지 않지만 아이디는 계속 증가한다.
-        // a 왜?????? 이미 commit이 되었기 때문이다. (commit => rollback)
-    }
-
     //    @DisplayName("게시글 수정 여부 확인")
 //    @ParameterizedTest
 //    @MethodSource("createPost")
@@ -99,6 +80,25 @@ public class PostCRUDTests {
 //        System.out.println("updatePost = " + updatePost);
 ////        Assertions.assertNotEquals(createPost.getTitle(), updatePost.get().getTitle());
 //    }
+
+    @DisplayName("게시글 작성 여부 확인")
+    @ParameterizedTest
+    @MethodSource("createPost")
+    void createPostTest(String title, Long memberId, Long categoryId, String contents, boolean published) {
+        CreatePostDTO post = new CreatePostDTO();
+        post.setTitle(title);
+        post.setMemberId(memberId);
+        post.setCategoryId(categoryId);
+        post.setContent(contents);
+        post.setPublished(published);
+
+        Post resultPost = createPostService.createPost(post);
+        // 삭제
+        System.out.println("resultPost = " + resultPost);
+        Assertions.assertNotNull(resultPost);
+        // 필기 db에는 저장되지 않지만 아이디는 계속 증가한다.
+        // a 왜?????? 이미 commit이 되었기 때문이다. (commit => rollback)
+    }
     @DisplayName("게시글 수정 제목 검증 여부 확인")
     @ParameterizedTest
     @MethodSource("createPost")
@@ -193,4 +193,23 @@ public class PostCRUDTests {
         Optional<Post> updatePost = postRepository.findById(updatePostDTO.getId());
         Assertions.assertEquals(modifyTime, updatePost.get().getCreatedDate());
     }
+
+    @DisplayName("게시글 삭제 여부 확인")
+    @ParameterizedTest
+    @MethodSource("createPost")
+    void deletePostTest(String title, Long memberId, Long categoryId, String contents, boolean published){
+        CreatePostDTO post = new CreatePostDTO();
+        post.setTitle(title);
+        post.setMemberId(memberId);
+        post.setCategoryId(categoryId);
+        post.setContent(contents);
+        post.setPublished(published);
+
+        Post createPost = createPostService.createPost(post);
+
+        int deleteBeforeCount= (int) postRepository.count();
+        postDeleteService.deletePost(createPost.getId());
+        Assertions.assertEquals(postRepository.count(),deleteBeforeCount-1);
+    }
+
 }

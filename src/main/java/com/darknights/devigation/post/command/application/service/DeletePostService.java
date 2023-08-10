@@ -14,7 +14,7 @@ public class DeletePostService {
     }
 
 
-    public void deletePost(long postId){
+    public void deletePost(Long postId){
         postRepository.deleteById(postId);
         // 추가 좋아요 삭제 기능
     }
