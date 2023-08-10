@@ -11,11 +11,10 @@ import javax.persistence.Embeddable;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberVO {
-    @Column(nullable = false, name ="member_id")
+public class CategoryVO {
+    @Column(nullable = false, name="category_id")
     private Long id;
+
     @Builder
-    public MemberVO(Long memberId){
-        this.id = memberId;
-    }
+    public CategoryVO(Long categoryId){this.id=categoryId;}
 }

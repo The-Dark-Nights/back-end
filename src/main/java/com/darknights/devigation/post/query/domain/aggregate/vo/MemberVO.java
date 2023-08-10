@@ -1,4 +1,4 @@
-package com.darknights.devigation.post.command.domain.aggregate.vo;
+package com.darknights.devigation.post.query.domain.aggregate.vo;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,9 +13,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberVO {
     @Column(nullable = false, name ="member_id")
-    private Long id;
+    private long id;
     @Builder
-    public MemberVO(Long memberId){
+    public MemberVO(long memberId){
         this.id = memberId;
     }
 }
