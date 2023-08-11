@@ -17,14 +17,18 @@ public class FindMemberService {
 
     public FindMemberDTO findByUID(String uid) {
         QueryMember findMember = memberMapper.findByUID(uid);
-        return new FindMemberDTO(
-                findMember.getId(),
-                findMember.getName(),
-                findMember.getAccessToken(),
-                findMember.getProfileImage(),
-                findMember.getPlatform().name(),
-                findMember.getRole().name()
-        );
+        if(findMember == null) {
+            return null;
+        } else {
+            return new FindMemberDTO(
+                    findMember.getId(),
+                    findMember.getName(),
+                    findMember.getAccessToken(),
+                    findMember.getProfileImage(),
+                    findMember.getPlatform().name(),
+                    findMember.getRole().name()
+            );
+        }
     }
 
     public FindMemberDTO findByAccessToken(String accessToken) {

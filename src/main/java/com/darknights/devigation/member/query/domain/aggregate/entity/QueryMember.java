@@ -21,7 +21,7 @@ public class QueryMember {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false, name = "access_token")
+    @Column(nullable = true, name = "access_token")
     private String accessToken;
 
     @Column(nullable = false, name = "uid")
