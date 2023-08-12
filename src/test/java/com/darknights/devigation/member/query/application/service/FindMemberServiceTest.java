@@ -37,7 +37,6 @@ class FindMemberServiceTest {
                                 "name1",
                                 Role.MEMBER,
                                 "profileImage",
-                                "accessTokenTest",
                                 PlatformEnum.GITHUB
                         )
                 )
@@ -53,13 +52,6 @@ class FindMemberServiceTest {
         Assertions.assertNotNull(findMemberService.findByUID(createMemberDTO.getUID()));
     }
 
-    @DisplayName("Access Token을 통해 생성이 되는지 확인")
-    @ParameterizedTest
-    @MethodSource("getMemberInfo")
-    void findByAccessToken(CreateMemberDTO createMemberDTO) {
-        createMemberService.create(createMemberDTO);
-        Assertions.assertNotNull(findMemberService.findByAccessToken(createMemberDTO.getAccessToken()));
-    }
 
     @DisplayName("Id를 통해 생성이 되는지 확인")
     @ParameterizedTest
