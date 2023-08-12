@@ -6,8 +6,6 @@ import com.darknights.devigation.member.query.domain.repository.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class FindMemberService {
 
