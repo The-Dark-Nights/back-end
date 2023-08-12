@@ -36,6 +36,7 @@ class FindMemberServiceTest {
                                 "1122ss",
                                 "name1",
                                 Role.MEMBER,
+                                "email@test.com",
                                 "profileImage",
                                 PlatformEnum.GITHUB
                         )

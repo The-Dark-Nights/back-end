@@ -11,6 +11,7 @@
         <result property="platform" column="platform"/>
         <result property="role" column="role"/>
         <result property="createdDate" column="created_date"/>
+        <result property="email" column="email"/>
     </resultMap>
 
     <select id="findAll" resultMap="QueryMemberMap">
@@ -43,5 +44,13 @@
             MEMBER_TB
         WHERE
             access_token = #{accessToken}
+    </select>
+
+    <select id="findByEmail" resultMap="QueryMemberMap">
+        SELECT *
+        FROM
+            MEMBER_TB
+        WHERE
+            email = #{email}
     </select>
 </mapper>

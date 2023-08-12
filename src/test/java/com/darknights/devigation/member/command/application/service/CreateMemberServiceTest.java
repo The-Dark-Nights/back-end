@@ -32,6 +32,7 @@ class CreateMemberServiceTest {
                                 "1122ss",
                                 "name1",
                                 Role.MEMBER,
+                                "email@test.com",
                                 "profileImage",
                                 PlatformEnum.GITHUB
                         )
@@ -41,6 +42,7 @@ class CreateMemberServiceTest {
                                 "2211ss",
                                 "name2",
                                 Role.MEMBER,
+                                "email@test.com",
                                 "profileImage",
                                 PlatformEnum.GITHUB
                         )

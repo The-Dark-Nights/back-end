@@ -5,12 +5,13 @@ import com.darknights.devigation.member.query.application.dto.FindMemberDTO;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 
 @Getter
-public class UserPrincipal implements OAuth2User {
+public class UserPrincipal implements OAuth2User, UserDetails {
 
     private final Long id;
     private final String name;
@@ -30,12 +31,16 @@ public class UserPrincipal implements OAuth2User {
         return new Builder(id, name, role, attributes);
     }
 
+    public static Builder builder(Long id, String name, String role) {
+        return new Builder(id, name, role);
+    }
+
     public static class Builder {
         private final Long id;
         private final String name;
         private final String role;
         private final Collection<? extends GrantedAuthority> authorities;
-        private final Map<String, Object> attributes;
+        private Map<String, Object> attributes;
 
         public Builder(Long id, String name, String role, Map<String, Object> attributes) {
             this.id = id;
@@ -43,6 +48,13 @@ public class UserPrincipal implements OAuth2User {
             this.role = role;
             this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
             this.attributes = attributes;
+        }
+
+        public Builder(Long id, String name, String role) {
+            this.id = id;
+            this.name = name;
+            this.role = role;
+            this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
         }
 
         /**
@@ -64,6 +76,10 @@ public class UserPrincipal implements OAuth2User {
         return UserPrincipal.builder(member.getId(), member.getName(), member.getRole(), attributes).build();
     }
 
+    public static UserPrincipal create(FindMemberDTO member) {
+        return UserPrincipal.builder(member.getId(), member.getName(), member.getRole()).build();
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
@@ -72,6 +88,36 @@ public class UserPrincipal implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override

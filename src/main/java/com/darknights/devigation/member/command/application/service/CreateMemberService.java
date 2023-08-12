@@ -20,6 +20,7 @@ public class CreateMemberService {
         Member createdMember = new Member(
                 createMemberDTO.getName(),
                 createMemberDTO.getUID(),
+                createMemberDTO.getEmail(),
                 createMemberDTO.getProfileImage(),
                 createMemberDTO.getPlatformEnum(),
                 createMemberDTO.getRole()

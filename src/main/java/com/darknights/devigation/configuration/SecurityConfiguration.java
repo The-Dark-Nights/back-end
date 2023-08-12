@@ -3,6 +3,8 @@ package com.darknights.devigation.configuration;
 import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2SuccessHandler;
 import com.darknights.devigation.security.command.application.service.CustomOAuth2UserService;
+import com.darknights.devigation.security.command.application.service.RestAuthenticationEntryPoint;
+import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +26,16 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    /*
+      기본적으로 Spring OAuth2는 HttpSessionOAuth2AuthorizationRequestRepository를 사용하여 인증 요청을 저장합니다.
+      그러나 우리 서비스는 상태 비저장이므로 세션에 저장할 수 없습니다.
+      대신 Base64로 인코딩된 쿠키에 요청을 저장합니다.
+    */
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,6 +50,9 @@ public class SecurityConfiguration {
                 .disable()
                 .formLogin()
                 .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
 
                 .authorizeRequests()
                     .antMatchers("/", "/error","/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js")
@@ -54,11 +69,16 @@ public class SecurityConfiguration {
                 .oauth2Login()
                     .authorizationEndpoint()
                         .baseUri("/oauth2/authorize")
-
+                    .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                     .and()
+                    .redirectionEndpoint()
+                        .baseUri("/oauth2/callback/*")
+                        .and()
                     .userInfoEndpoint()
-                        .userService(customOAuth2UserService);
-
+                        .userService(customOAuth2UserService)
+                        .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
+                    .failureHandler(oAuth2AuthenticationFailureHandler);
 
         return http.build();
     }

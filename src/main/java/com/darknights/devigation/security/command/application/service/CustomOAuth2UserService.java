@@ -40,15 +40,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-        System.out.println("oAuth2User = " + oAuth2User.toString());
             String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId(); // 소셜 정보 가져옴
 
-            System.out.println("registrationId = " + registrationId);
-
             String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-            System.out.println("userNameAttributeName = " + userNameAttributeName);
+
             OAuth2UserInfo attributes = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, oAuth2User.getAttributes());
-            System.out.println("attributes = " + attributes.getAttributes());
 
             UserPrincipal socialMember =  saveOrUpdate(attributes, registrationId);
             return socialMember;
@@ -59,7 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         System.out.println("member = " + member);
         UserPrincipal oauthMember;
         if (member == null) {
-            CreateMemberDTO createMemberDTO = new CreateMemberDTO(attributes.getId(), attributes.getName(), Role.MEMBER, attributes.getImageUrl(), PlatformEnum.valueOf(provider.toUpperCase()));
+            CreateMemberDTO createMemberDTO = new CreateMemberDTO(attributes.getId(), attributes.getName(), Role.MEMBER, attributes.getImageUrl(), attributes.getEmail(), PlatformEnum.valueOf(provider.toUpperCase()));
             Member newMember = createMemberService.create(createMemberDTO);
             oauthMember = UserPrincipal.create(newMember, attributes.getAttributes());
         } else {

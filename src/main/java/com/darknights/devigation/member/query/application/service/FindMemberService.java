@@ -6,6 +6,8 @@ import com.darknights.devigation.member.query.domain.repository.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FindMemberService {
 
@@ -46,6 +48,20 @@ public class FindMemberService {
     public FindMemberDTO findById(long memberId) {
 
         QueryMember findMember = memberMapper.findById(memberId);
+
+        return new FindMemberDTO(
+                findMember.getId(),
+                findMember.getName(),
+                findMember.getAccessToken(),
+                findMember.getProfileImage(),
+                findMember.getPlatform().name(),
+                findMember.getRole().name()
+        );
+    }
+
+    public FindMemberDTO  findByEmail(String email) {
+
+        QueryMember findMember = memberMapper.findByEmail(email);
 
         return new FindMemberDTO(
                 findMember.getId(),
