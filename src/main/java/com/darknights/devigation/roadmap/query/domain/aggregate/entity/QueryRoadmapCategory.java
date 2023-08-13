@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name="ROADMAP_TB")
+@Table(name="CATEGORY_IN_ROADMAP_TB")
 @NoArgsConstructor
 @Getter
 public class QueryRoadmapCategory {
