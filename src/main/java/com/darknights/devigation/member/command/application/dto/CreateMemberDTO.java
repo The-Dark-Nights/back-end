@@ -10,15 +10,13 @@ public class CreateMemberDTO {
     private final String name;
     private final Role role;
     private final String profileImage;
-    private final String accessToken;
     private final PlatformEnum platformEnum;
 
-    public CreateMemberDTO(String UID, String name, Role role, String profileImage, String accessToken, PlatformEnum platformEnum) {
+    public CreateMemberDTO(String UID, String name, Role role, String profileImage, PlatformEnum platformEnum) {
         this.UID = UID;
         this.name = name;
         this.role = role;
         this.profileImage = profileImage;
-        this.accessToken = accessToken;
         this.platformEnum = platformEnum;
     }
 }

@@ -19,7 +19,6 @@ public class CreateMemberService {
     public Member create(CreateMemberDTO createMemberDTO) {
         Member createdMember = new Member(
                 createMemberDTO.getName(),
-                createMemberDTO.getAccessToken(),
                 createMemberDTO.getUID(),
                 createMemberDTO.getProfileImage(),
                 createMemberDTO.getPlatformEnum(),

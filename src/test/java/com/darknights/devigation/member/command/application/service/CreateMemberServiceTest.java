@@ -33,7 +33,6 @@ class CreateMemberServiceTest {
                                 "name1",
                                 Role.MEMBER,
                                 "profileImage",
-                                "accessTokenTest",
                                 PlatformEnum.GITHUB
                         )
                 ),
@@ -43,7 +42,6 @@ class CreateMemberServiceTest {
                                 "name2",
                                 Role.MEMBER,
                                 "profileImage",
-                                "accessTokenTest",
                                 PlatformEnum.GITHUB
                         )
                 )

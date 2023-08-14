@@ -21,7 +21,7 @@ public class Member {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false, name = "access_token")
+    @Column(nullable = true, name = "access_token")
     private String accessToken;
 
     @Column(nullable = false, name = "uid")
@@ -44,9 +44,8 @@ public class Member {
 
     protected Member() {};
 
-    public Member(String name, String accessToken, String UID, String profileImage, PlatformEnum platform, Role role) {
+    public Member(String name, String UID, String profileImage, PlatformEnum platform, Role role) {
         this.name = name;
-        this.accessToken = accessToken;
         this.UID = UID;
         this.profileImage = profileImage;
         this.platform = platform;
