@@ -4,10 +4,11 @@ import com.darknights.devigation.category.command.application.dto.CreateCategory
 import com.darknights.devigation.category.command.application.dto.UpdateCategoryDTO;
 import com.darknights.devigation.category.command.domain.aggregate.entity.Category;
 import com.darknights.devigation.category.command.domain.repository.CategoryRepository;
+import com.darknights.devigation.common.annotation.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@DomainService
 public class CategoryService {
     public Category toCategoryEntity(CreateCategoryDTO createCategoryDTO){
        return new Category(createCategoryDTO.getMemberId(),createCategoryDTO.getName());
