@@ -14,4 +14,6 @@ public interface MemberMapper {
     QueryMember findByUID(String uid);
 
     QueryMember findByAccessToken(String accessToken);
+
+    QueryMember findByEmail(String email);
 }

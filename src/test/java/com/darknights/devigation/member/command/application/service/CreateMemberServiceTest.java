@@ -5,7 +5,6 @@ import com.darknights.devigation.member.command.domain.aggregate.entity.enumType
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -32,6 +29,7 @@ class CreateMemberServiceTest {
                                 "1122ss",
                                 "name1",
                                 Role.MEMBER,
+                                "email@test.com",
                                 "profileImage",
                                 PlatformEnum.GITHUB
                         )
@@ -41,6 +39,7 @@ class CreateMemberServiceTest {
                                 "2211ss",
                                 "name2",
                                 Role.MEMBER,
+                                "email@test.com",
                                 "profileImage",
                                 PlatformEnum.GITHUB
                         )
