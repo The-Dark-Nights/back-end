@@ -27,11 +27,11 @@ import static com.darknights.devigation.security.command.domain.repository.HttpC
 @Component
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private CustomTokenService customTokenService;
+    private final CustomTokenService customTokenService;
 
-    private AppProperties appProperties;
+    private final AppProperties appProperties;
 
-    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     CustomOAuth2SuccessHandler(CustomTokenService customTokenService, AppProperties appProperties,

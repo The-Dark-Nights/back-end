@@ -1,10 +1,10 @@
 package com.darknights.devigation.security.command.application.service;
 
-import com.darknights.devigation.configuration.AppProperties;
 import com.darknights.devigation.security.token.UserPrincipal;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +14,19 @@ import java.util.Date;
 @Service
 public class CustomTokenService {
 
-    private final AppProperties appProperties;
+    @Value("${app.auth.tokenSecret}")
+    private String JWT_SECRET;
 
-    public CustomTokenService(AppProperties appProperties) {
-        this.appProperties = appProperties;
-    }
+    @Value("${app.auth.tokenExpirationMsec}")
+    private int JWT_EXPIRATION_MS;
 
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_MS);
 
-        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getTokenSecret());
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         Key key = Keys.hmacShaKeyFor(keyBytes);
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
@@ -39,7 +39,7 @@ public class CustomTokenService {
 
     public Long getUserIdFromToken(String token) {
 
-        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getTokenSecret());
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         Claims claims = Jwts.parserBuilder()
@@ -54,7 +54,7 @@ public class CustomTokenService {
     public boolean validateToken(String authToken) {
         try {
             //Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-            Jwts.parserBuilder().setSigningKey(appProperties.getAuth().getTokenSecret()).build().parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(JWT_SECRET).build().parseClaimsJws(authToken);
             return true;
         } catch (SecurityException | MalformedJwtException ex) {
             System.out.println("잘못된 JWT 서명입니다.");
