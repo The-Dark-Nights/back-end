@@ -14,7 +14,7 @@ import java.util.Date;
 @Service
 public class CustomTokenService {
 
-    private AppProperties appProperties;
+    private final AppProperties appProperties;
 
     public CustomTokenService(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -53,7 +53,8 @@ public class CustomTokenService {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+            //Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(appProperties.getAuth().getTokenSecret()).build().parseClaimsJws(authToken);
             return true;
         } catch (SecurityException | MalformedJwtException ex) {
             System.out.println("잘못된 JWT 서명입니다.");
