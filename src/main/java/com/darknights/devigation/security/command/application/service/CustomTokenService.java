@@ -28,9 +28,9 @@ public class CustomTokenService {
 
         byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getTokenSecret());
         Key key = Keys.hmacShaKeyFor(keyBytes);
-
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
+                .claim("role", userPrincipal.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(key,SignatureAlgorithm.HS256)
@@ -55,14 +55,14 @@ public class CustomTokenService {
         try {
             Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
             return true;
-        } catch (MalformedJwtException ex) {
-            System.out.println("Invalid JWT token");
+        } catch (SecurityException | MalformedJwtException ex) {
+            System.out.println("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException ex) {
-            System.out.println("Expired JWT token");
+            System.out.println("만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException ex) {
-            System.out.println("Unsupported JWT token");
+            System.out.println("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException ex) {
-            System.out.println("JWT claims string is empty.");
+            System.out.println("JWT 토큰이 잘못되었습니다.");
         }
         return false;
     }
