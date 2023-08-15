@@ -1,10 +1,13 @@
 package com.darknights.devigation.configuration;
 
+import com.darknights.devigation.common.filter.JwtExceptionFilter;
+import com.darknights.devigation.common.filter.TokenAuthenticationFilter;
 import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2SuccessHandler;
 import com.darknights.devigation.security.command.application.service.CustomOAuth2UserService;
 import com.darknights.devigation.security.command.application.service.RestAuthenticationEntryPoint;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.Filter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -20,6 +26,8 @@ public class SecurityConfiguration {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomOAuth2FailHandler oAuth2AuthenticationFailureHandler;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -39,6 +47,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtExceptionFilter, tokenAuthenticationFilter.getClass());
 
         http
                 .cors()
@@ -82,4 +93,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }
