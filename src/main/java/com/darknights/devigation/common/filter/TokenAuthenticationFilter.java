@@ -20,18 +20,21 @@ import java.io.IOException;
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private CustomTokenService customTokenService;
+    private final CustomTokenService customTokenService;
+
+    private final CustomUserDetailService customUserDetailService;
 
     @Autowired
-    private CustomUserDetailService customUserDetailService;
+    public TokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+        this.customTokenService = customTokenService;
+        this.customUserDetailService = customUserDetailService;
+    }
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-
             if (StringUtils.hasText(jwt) && customTokenService.validateToken(jwt)) {
                 Long userId = customTokenService.getUserIdFromToken(jwt);
 

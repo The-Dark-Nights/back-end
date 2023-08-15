@@ -23,7 +23,7 @@ public class FindMemberService {
             return new FindMemberDTO(
                     findMember.getId(),
                     findMember.getName(),
-                    findMember.getAccessToken(),
+                    findMember.getEmail(),
                     findMember.getProfileImage(),
                     findMember.getPlatform().name(),
                     findMember.getRole().name()
@@ -36,7 +36,7 @@ public class FindMemberService {
         return new FindMemberDTO(
                 findMember.getId(),
                 findMember.getName(),
-                findMember.getAccessToken(),
+                findMember.getEmail(),
                 findMember.getProfileImage(),
                 findMember.getPlatform().name(),
                 findMember.getRole().name()
@@ -50,7 +50,7 @@ public class FindMemberService {
         return new FindMemberDTO(
                 findMember.getId(),
                 findMember.getName(),
-                findMember.getAccessToken(),
+                findMember.getEmail(),
                 findMember.getProfileImage(),
                 findMember.getPlatform().name(),
                 findMember.getRole().name()
@@ -64,7 +64,7 @@ public class FindMemberService {
         return new FindMemberDTO(
                 findMember.getId(),
                 findMember.getName(),
-                findMember.getAccessToken(),
+                findMember.getEmail(),
                 findMember.getProfileImage(),
                 findMember.getPlatform().name(),
                 findMember.getRole().name()
