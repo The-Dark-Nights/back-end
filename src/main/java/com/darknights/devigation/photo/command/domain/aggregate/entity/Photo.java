@@ -16,7 +16,7 @@ public class Photo {
     private Long id;
 
     @Column(nullable = false)
-    private Long originId;
+    private Long originId;    // 특정 게시물의 ID
 
     @Column(name = "PHOTO_CATEGORY", nullable = false)
     @Enumerated(EnumType.STRING)
