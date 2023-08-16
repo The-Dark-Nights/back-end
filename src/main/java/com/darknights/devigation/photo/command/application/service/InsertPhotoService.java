@@ -35,11 +35,11 @@ public class InsertPhotoService {
             return null;
         }
 
-        String savedFolder = "post/";
+        String savedFolder = null;
 
-//        if (category.equals("POST")) {
-//            savedFolder = "post/";
-//        }
+        if (category == PhotoCategory.POST) {
+            savedFolder = "post/";
+        }
 
         File savedFile = null;
 
