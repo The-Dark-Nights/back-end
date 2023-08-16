@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 public class UpdatePostDTO {
     private Long id;
     private String title;
-    private Long memberId;
+    private Long memberId;  // 필요 없을 수도 있음
     private Long categoryId;
     private String content;
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate; // 필요 없을 수도 있음
     private boolean published;
 
     public UpdatePostDTO(Long id, String title, MemberVO memberId, CategoryVO categoryId, String content, LocalDateTime createdDate, boolean published) {
