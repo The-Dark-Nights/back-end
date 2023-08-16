@@ -82,7 +82,7 @@ public class CategoryServiceTests {
         long id = createCategoryService.createCategory(createCategoryDTO).getId();
         if (categoryRepository.findById(id).isPresent()) {
             UpdateCategoryDTO updateCategoryDTO = new UpdateCategoryDTO(id, newName, memberId);
-            Assertions.assertEquals(newName, updateCategoryService.updateCategory(updateCategoryDTO).getName());
+            Assertions.assertTrue(updateCategoryService.updateCategory(updateCategoryDTO));
         }else{
             Assertions.fail();
         }
