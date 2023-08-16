@@ -9,6 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -31,7 +35,7 @@ public class CustomTokenService {
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .claim("role", userPrincipal.getRole())
-                .setIssuedAt(new Date())
+                .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key,SignatureAlgorithm.HS256)
                 .compact();
@@ -57,15 +61,17 @@ public class CustomTokenService {
             Jwts.parserBuilder().setSigningKey(JWT_SECRET).build().parseClaimsJws(authToken);
             return true;
         } catch (SecurityException | MalformedJwtException ex) {
-            System.out.println("잘못된 JWT 서명입니다.");
+            System.out.println("잘못된 JWT 서명");
+            throw new JwtException("잘못된 JWT 서명");
         } catch (ExpiredJwtException ex) {
-            System.out.println("만료된 JWT 토큰입니다.");
+            throw new JwtException("토큰 기한 만료 (유효 시간 : " + ex.getClaims().getExpiration() + ")");
         } catch (UnsupportedJwtException ex) {
-            System.out.println("지원되지 않는 JWT 토큰입니다.");
+            System.out.println("지원되지 않는 JWT 토큰");
+            throw new JwtException("지원되지 않는 JWT 토큰");
         } catch (IllegalArgumentException ex) {
-            System.out.println("JWT 토큰이 잘못되었습니다.");
+            System.out.println("잘못된 JWT 토큰");
+            throw new JwtException("잘못된 JWT 토큰");
         }
-        return false;
     }
 
 }
