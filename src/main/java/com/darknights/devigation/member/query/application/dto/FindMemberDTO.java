@@ -13,20 +13,21 @@ public class FindMemberDTO {
 
     private String name;
 
-    private String AccessToken;
-
     private String profileImage;
 
     private String platform;
 
     private String role;
 
+    private String email;
+
     protected FindMemberDTO() {}
 
-    public FindMemberDTO(long id, String name, String accessToken, String profileImage, String platform, String role) {
+
+    public FindMemberDTO(long id, String name, String email, String profileImage, String platform, String role) {
         this.id = id;
         this.name = name;
-        AccessToken = accessToken;
+        this.email = email;
         this.profileImage = profileImage;
         this.platform = platform;
         this.role = role;

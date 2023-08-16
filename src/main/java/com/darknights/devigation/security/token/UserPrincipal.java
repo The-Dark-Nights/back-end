@@ -13,6 +13,7 @@ import java.util.*;
 @Getter
 public class UserPrincipal implements OAuth2User, UserDetails {
 
+    @Getter
     private final Long id;
     private final String name;
     private final String role;
@@ -124,4 +125,5 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public String getName() {
         return name;
     }
+
 }

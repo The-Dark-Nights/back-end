@@ -1,18 +1,12 @@
 package com.darknights.devigation.security.command.application.service;
 
-import com.darknights.devigation.security.token.UserPrincipal;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -24,8 +18,7 @@ public class CustomTokenService {
     @Value("${app.auth.tokenExpirationMsec}")
     private int JWT_EXPIRATION_MS;
 
-    public String createToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+    public String createToken(long memberId, String memberRole) {
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_MS);
@@ -33,13 +26,14 @@ public class CustomTokenService {
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         Key key = Keys.hmacShaKeyFor(keyBytes);
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
-                .claim("role", userPrincipal.getRole())
+                .setSubject(Long.toString(memberId))
+                .claim("role", memberRole)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key,SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public Long getUserIdFromToken(String token) {
 

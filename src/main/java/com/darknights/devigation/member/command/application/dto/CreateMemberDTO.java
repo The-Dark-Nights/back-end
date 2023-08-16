@@ -3,8 +3,10 @@ package com.darknights.devigation.member.command.application.dto;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.PlatformEnum;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class CreateMemberDTO {
     private final String UID;
     private final String name;

@@ -6,6 +6,7 @@ import com.darknights.devigation.security.command.application.service.CustomToke
 import com.darknights.devigation.security.command.domain.aggregate.util.CookieUtils;
 import com.darknights.devigation.security.command.domain.exception.BadRequestException;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.darknights.devigation.security.token.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -65,7 +66,9 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        String token = customTokenService.createToken(authentication);
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        String token = customTokenService.createToken(userPrincipal.getId(), userPrincipal.getRole());
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)

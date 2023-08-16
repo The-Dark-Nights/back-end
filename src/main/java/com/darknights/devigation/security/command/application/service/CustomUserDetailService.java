@@ -23,11 +23,10 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-            FindMemberDTO member = findMemberService.findByEmail(email);
-            return UserPrincipal.create(member);
-    }
 
-    @Transactional
+        FindMemberDTO member = findMemberService.findByEmail(email);
+        return UserPrincipal.create(member);
+    }
     public UserDetails loadUserById(Long id) {
         FindMemberDTO member = findMemberService.findById(id);
 
