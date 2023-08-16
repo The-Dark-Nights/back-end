@@ -1,32 +1,60 @@
 package com.darknights.devigation.roadmap.query.domain.aggregate.entity;
 
+import com.darknights.devigation.roadmap.query.domain.aggregate.vo.CategoryVO;
 import com.darknights.devigation.roadmap.query.domain.aggregate.vo.ChildCategoryVO;
 import com.darknights.devigation.roadmap.query.domain.aggregate.vo.ParentCategoryVO;
 import com.darknights.devigation.roadmap.query.domain.aggregate.vo.RoadmapVO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="CATEGORY_IN_ROADMAP_TB")
-@NoArgsConstructor
+@Table(name="ROADMAP_CATEGORY_TB")
 @Getter
+@ToString
+
 public class QueryRoadmapCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private RoadmapVO roadmapId;
+    @Column(name = "category_id",nullable = false, unique = true)
+    private long categoryId;
+
+    @Column(name = "roadmap_id",nullable = false)
+    private long roadmapId;
 
     @Column(nullable = false)
     private String position;
 
-    @Embedded
-    private ChildCategoryVO childCategoryId;
+    @Column(name = "child_category_id")
+    private long childCategoryId;
 
-    @Embedded
-    private ParentCategoryVO parentCategoryId;
-
+    @Column (name = "parent_category_id")
+    private long parentCategoryId;
+//    @Embedded
+//    private CategoryVO category;
+//
+//    @Embedded
+//    private RoadmapVO roadmap;
+//
+//    @Column(nullable = false)
+//    private String position;
+//
+//    @Embedded
+//    private ChildCategoryVO childCategory;
+//
+//    @Embedded
+//    private ParentCategoryVO parentCategory;
+//    protected QueryRoadmapCategory(){};
+//
+//    public QueryRoadmapCategory(Long id, CategoryVO category, RoadmapVO roadmap, String position, ChildCategoryVO childCategory, ParentCategoryVO parentCategory) {
+//        this.id = id;
+//        this.category = category;
+//        this.roadmap = roadmap;
+//        this.position = position;
+//        this.childCategory = childCategory;
+//        this.parentCategory = parentCategory;
+//    }
 }

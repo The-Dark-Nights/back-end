@@ -1,6 +1,5 @@
 package com.darknights.devigation.roadmap.query.domain.aggregate.vo;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,13 +8,14 @@ import javax.persistence.Embeddable;
 
 @Getter
 @Embeddable
-public class RoadmapVO {
-    @Column(name = "roadmap_id", nullable = false)
-    private Long id;
+public class CategoryVO {
+    @Column(name = "category_id", nullable = false)
+    private long id;
 
-    public RoadmapVO(long id){
-        this.id =id;
+    protected CategoryVO() {
     }
 
-    protected RoadmapVO() {};
+    public CategoryVO(long categoryId){
+        this.id =categoryId;
+    }
 }
