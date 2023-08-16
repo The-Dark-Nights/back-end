@@ -1,5 +1,6 @@
 package com.darknights.devigation.security.command.application.service;
 
+import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -56,15 +57,19 @@ public class CustomTokenService {
             return true;
         } catch (SecurityException | MalformedJwtException ex) {
             System.out.println("잘못된 JWT 서명");
-            throw new JwtException("잘못된 JWT 서명");
+            // throw new JwtException("잘못된 JWT 서명");
+            throw new OAuth2AuthenticationProcessingException("잘못된 JWT 서명", ex.getCause());
         } catch (ExpiredJwtException ex) {
-            throw new JwtException("토큰 기한 만료 (유효 시간 : " + ex.getClaims().getExpiration() + ")");
+            // throw new JwtException("토큰 기한 만료 (유효 시간 : " + ex.getClaims().getExpiration() + ")");
+            throw new OAuth2AuthenticationProcessingException("토큰 기한 만료 (유효 시간 : " + ex.getClaims().getExpiration() + ")", ex.getCause());
         } catch (UnsupportedJwtException ex) {
             System.out.println("지원되지 않는 JWT 토큰");
-            throw new JwtException("지원되지 않는 JWT 토큰");
+            // throw new JwtException("지원되지 않는 JWT 토큰");
+            throw new OAuth2AuthenticationProcessingException("지원되지 않는 JWT 토큰", ex.getCause());
         } catch (IllegalArgumentException ex) {
             System.out.println("잘못된 JWT 토큰");
-            throw new JwtException("잘못된 JWT 토큰");
+            // throw new JwtException("잘못된 JWT 토큰");
+            throw new OAuth2AuthenticationProcessingException("잘못된 JWT 토큰", ex.getCause());
         }
     }
 
