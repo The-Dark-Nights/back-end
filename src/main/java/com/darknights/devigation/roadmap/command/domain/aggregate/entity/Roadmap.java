@@ -21,7 +21,8 @@ public class Roadmap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
 
     @Column(nullable = false)
     private String title;
@@ -41,6 +42,7 @@ public class Roadmap {
     public Roadmap(String title, long memberId) {
         this.title = title;
         this.memberId = new MemberVO(memberId);
+        this.createdDate = LocalDateTime.now();
     }
 
     public Roadmap(long id, String title, MemberVO memberId, LocalDateTime createdDate, LocalDateTime modifiedDate) {
