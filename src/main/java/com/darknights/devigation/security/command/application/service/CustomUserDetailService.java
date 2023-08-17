@@ -2,6 +2,7 @@ package com.darknights.devigation.security.command.application.service;
 
 import com.darknights.devigation.member.query.application.dto.FindMemberDTO;
 import com.darknights.devigation.member.query.application.service.FindMemberService;
+import com.darknights.devigation.security.command.domain.exception.UserNotFoundException;
 import com.darknights.devigation.security.token.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,9 +28,9 @@ public class CustomUserDetailService implements UserDetailsService {
         FindMemberDTO member = findMemberService.findByEmail(email);
         return UserPrincipal.create(member);
     }
+
     public UserDetails loadUserById(Long id) {
         FindMemberDTO member = findMemberService.findById(id);
-
         return UserPrincipal.create(member);
     }
 }
