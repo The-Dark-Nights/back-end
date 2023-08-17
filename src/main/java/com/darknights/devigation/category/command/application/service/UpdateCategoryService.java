@@ -6,6 +6,10 @@ import com.darknights.devigation.category.command.domain.repository.CategoryRepo
 import com.darknights.devigation.category.command.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Service
 public class UpdateCategoryService {
@@ -18,7 +22,17 @@ public class UpdateCategoryService {
         this.categoryService = categoryService;
     }
 
-    public Category updateCategory(UpdateCategoryDTO updateCategoryDTO){
-        return categoryRepository.save(categoryService.toCategoryEntity(updateCategoryDTO));
+    @Transactional
+    public boolean updateCategory(UpdateCategoryDTO updateCategoryDTO){
+        Optional<Category> category = categoryRepository.findById(updateCategoryDTO.getId());
+        if(category.isPresent()){
+            Category updateCategory = category.get();
+            if(!updateCategoryDTO.getName().isEmpty()){
+                updateCategory.setName(updateCategoryDTO.getName());
+            }
+            return true;
+        }else{
+            return false;
+        }
     }
 }
