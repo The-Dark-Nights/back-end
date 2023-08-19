@@ -1,16 +1,16 @@
-package com.darknights.devigation.security.command.application.service;
+package com.darknights.devigation.security.command.domain.service;
 
+import com.darknights.devigation.common.annotation.DomainService;
 import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
-@Service
+@DomainService
 public class CustomTokenService {
 
     @Value("${app.auth.tokenSecret}")

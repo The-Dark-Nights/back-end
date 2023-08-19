@@ -7,18 +7,22 @@ import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2SuccessHandler;
 import com.darknights.devigation.member.query.domain.aggregate.entity.enumType.Role;
 import com.darknights.devigation.security.command.application.service.CustomOAuth2UserService;
+import com.darknights.devigation.security.command.application.service.CustomUserDetailService;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -27,14 +31,25 @@ public class SecurityConfiguration {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomOAuth2FailHandler oAuth2AuthenticationFailureHandler;
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
-    private final AuthenticationExceptionFilter authenticationExceptionFilter;
+    // private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    // private final AuthenticationExceptionFilter authenticationExceptionFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Autowired
     @Qualifier("RestAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
+    private CustomTokenService customTokenService;
+    private CustomUserDetailService customUserDetailService;
+    private HandlerExceptionResolver resolver;
 
+
+    AuthenticationExceptionFilter authenticationExceptionFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+        return new AuthenticationExceptionFilter(resolver);
+    }
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+        return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -53,10 +68,25 @@ public class SecurityConfiguration {
 
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+            web.ignoring()
+                    .antMatchers(
+                            "/", "/error","/favicon.ico", "/**/*.png",
+                            "/**/*.gif", "/**/*.svg", "/**/*.jpg",
+                            "/**/*.html", "/**/*.css", "/**/*.js"
+                            )
+                    .antMatchers(
+                            "/swagger", "/swagger-ui.html", "/swagger-ui/**",
+                            "/api-docs", "/api-docs/**", "/v3/api-docs/**"
+                    )
+                    .antMatchers(
+                            "/login/**","/auth/**", "/oauth2/**"
+                    );
+        };
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(authenticationExceptionFilter, tokenAuthenticationFilter.getClass());
 
         http
                 .cors()
@@ -73,18 +103,10 @@ public class SecurityConfiguration {
                 .and()
 
                 .authorizeRequests()
-                    .antMatchers("/", "/error","/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js")
-                        .permitAll()
-                    .antMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
-                        .permitAll()
-                    .antMatchers("/login/**","/auth/**", "/oauth2/**")
-                        .permitAll()
                     .antMatchers("/blog/**")
                         .permitAll()
                     .antMatchers("/admin/**")
                         .hasRole(Role.BAN.name())
-                    .anyRequest()
-                        .authenticated()
                     .and()
                 .oauth2Login()
                     .authorizationEndpoint()
@@ -103,6 +125,10 @@ public class SecurityConfiguration {
         http
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler);
+
+        http
+                .addFilterBefore(tokenAuthenticationFilter(customTokenService, customUserDetailService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationExceptionFilter(resolver), TokenAuthenticationFilter.class);
 
         return http.build();
     }

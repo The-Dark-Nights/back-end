@@ -5,7 +5,7 @@ import com.darknights.devigation.member.command.application.service.CreateMember
 import com.darknights.devigation.member.command.domain.aggregate.entity.Member;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.PlatformEnum;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
-import com.darknights.devigation.security.command.application.service.CustomTokenService;
+import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import com.darknights.devigation.security.command.application.service.CustomUserDetailService;
 import com.darknights.devigation.security.token.UserPrincipal;
 import org.junit.jupiter.api.Assertions;

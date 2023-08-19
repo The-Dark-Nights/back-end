@@ -3,7 +3,7 @@ package com.darknights.devigation.common.advice;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.darknights.devigation.common.entity.error.ErrorResponse;
-import com.darknights.devigation.security.command.application.service.CustomTokenService;
+import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

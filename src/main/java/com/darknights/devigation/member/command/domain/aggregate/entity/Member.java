@@ -21,9 +21,6 @@ public class Member {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = true, name = "access_token")
-    private String accessToken;
-
     @Column(nullable = false, name = "email", unique = true)
     private String email;
 
@@ -45,7 +42,7 @@ public class Member {
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
-    protected Member() {};
+    protected Member() {}
 
     public Member(String name, String UID, String profileImage, String email ,PlatformEnum platform, Role role) {
         this.name = name;
