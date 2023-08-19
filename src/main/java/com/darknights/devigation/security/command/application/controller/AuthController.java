@@ -35,7 +35,7 @@ public class AuthController {
         String issuedToken = issueTokenService.issueTokenByAccessToken(accessToken);
 
         ApiResponse apiResponse = new ApiResponse()
-                .setStatus(HttpStatus.FORBIDDEN.value())
+                .setStatus(HttpStatus.CREATED.value())
                 .setMessage("새로운 Access Token을 발급했습니다.")
                 .setTimestamp(LocalDateTime.now());
 

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -67,25 +68,54 @@ public class SecurityConfiguration {
     }
 
 
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(){
+//        return web -> {
+//            web.ignoring()
+//                    .antMatchers(
+//                            "/", "/error","/favicon.ico", "/**/*.png",
+//                            "/**/*.gif", "/**/*.svg", "/**/*.jpg",
+//                            "/**/*.html", "/**/*.css", "/**/*.js"
+//                            )
+//                    .antMatchers(
+//                            "/swagger", "/swagger-ui.html", "/swagger-ui/**",
+//                            "/api-docs", "/api-docs/**", "/v3/api-docs/**"
+//                    )
+//                    .antMatchers(
+//                            "/login/**","/auth/**"
+//                    );
+//        };
+
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> {
-            web.ignoring()
-                    .antMatchers(
+    @Order(0)
+    public SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .requestMatchers((matchers) ->
+                        matchers
+                                .antMatchers(
                             "/", "/error","/favicon.ico", "/**/*.png",
                             "/**/*.gif", "/**/*.svg", "/**/*.jpg",
                             "/**/*.html", "/**/*.css", "/**/*.js"
                             )
-                    .antMatchers(
+                            .antMatchers(
                             "/swagger", "/swagger-ui.html", "/swagger-ui/**",
                             "/api-docs", "/api-docs/**", "/v3/api-docs/**"
-                    )
-                    .antMatchers(
-                            "/login/**","/auth/**", "/oauth2/**"
-                    );
-        };
+                            )
+                            .antMatchers(
+                                "/login/**","/auth/**"
+                            )
+                )
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+                .csrf().disable()
+                .requestCache().disable()
+                .securityContext().disable()
+                .sessionManagement().disable();
+
+        return http.build();
     }
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
@@ -103,6 +133,8 @@ public class SecurityConfiguration {
                 .and()
 
                 .authorizeRequests()
+                    .antMatchers("/oauth2/**")
+                        .permitAll()
                     .antMatchers("/blog/**")
                         .permitAll()
                     .antMatchers("/admin/**")
