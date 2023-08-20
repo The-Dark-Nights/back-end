@@ -39,6 +39,14 @@ class TokenAuthenticationFilterTest {
     private CustomTokenService customTokenService;
 
     @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+        return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
+    }
+
     private TokenAuthenticationFilter tokenAuthenticationFilter;
 
     private MockHttpServletRequest mockRequest;
@@ -48,16 +56,18 @@ class TokenAuthenticationFilterTest {
     private TokenAuthenticationFilter mockTokenAuthenticationFilter;
     private UserPrincipal userPrincipal;
     private CustomUserDetailService mockUserDetailsService;
-    private CustomTokenService mockCustomTokenService;
     private Member member;
 
     @BeforeEach
     void setUp() {
+        tokenAuthenticationFilter = tokenAuthenticationFilter(customTokenService, customUserDetailService);
+
+
         mockRequest = new MockHttpServletRequest();
         mockResponse = new MockHttpServletResponse();
         mockFilterChain = new MockFilterChain();
         mockUserDetailsService = mock(CustomUserDetailService.class);
-        mockCustomTokenService = mock(CustomTokenService.class);
+        CustomTokenService mockCustomTokenService = mock(CustomTokenService.class);
 
         member = createMemberService.create(new CreateMemberDTO(
                 "UIDTEST",
