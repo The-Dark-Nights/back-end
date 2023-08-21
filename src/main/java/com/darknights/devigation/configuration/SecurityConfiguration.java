@@ -7,14 +7,16 @@ import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2SuccessHandler;
 import com.darknights.devigation.member.query.domain.aggregate.entity.enumType.Role;
 import com.darknights.devigation.security.command.application.service.CustomOAuth2UserService;
-import com.darknights.devigation.security.command.application.service.RestAuthenticationEntryPoint;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,6 +30,11 @@ public class SecurityConfiguration {
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final AuthenticationExceptionFilter authenticationExceptionFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Autowired
+    @Qualifier("RestAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -62,7 +69,7 @@ public class SecurityConfiguration {
                 .formLogin()
                 .disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .authenticationEntryPoint(authEntryPoint)
                 .and()
 
                 .authorizeRequests()
