@@ -2,7 +2,7 @@ package com.darknights.devigation.common.handler;
 
 
 import com.darknights.devigation.configuration.AppProperties;
-import com.darknights.devigation.security.command.application.service.CustomTokenService;
+import com.darknights.devigation.security.command.application.service.IssueTokenService;
 import com.darknights.devigation.security.command.domain.aggregate.util.CookieUtils;
 import com.darknights.devigation.security.command.domain.exception.BadRequestException;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -28,16 +28,16 @@ import static com.darknights.devigation.security.command.domain.repository.HttpC
 @Component
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final CustomTokenService customTokenService;
+    private final IssueTokenService issueTokenService;
 
     private final AppProperties appProperties;
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
-    CustomOAuth2SuccessHandler(CustomTokenService customTokenService, AppProperties appProperties,
+    CustomOAuth2SuccessHandler(IssueTokenService issueTokenService, AppProperties appProperties,
                                HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
-        this.customTokenService = customTokenService;
+        this.issueTokenService = issueTokenService;
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
@@ -68,7 +68,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-        String token = customTokenService.createToken(userPrincipal.getId(), userPrincipal.getRole());
+        String token = issueTokenService.issueTokenByUserPrincipal(userPrincipal);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)

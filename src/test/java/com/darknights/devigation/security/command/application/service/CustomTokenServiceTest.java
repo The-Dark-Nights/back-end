@@ -1,7 +1,6 @@
 package com.darknights.devigation.security.command.application.service;
-import com.darknights.devigation.member.command.application.dto.CreateMemberDTO;
-import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.PlatformEnum;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
+import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Assertions;

@@ -1,11 +1,8 @@
 package com.darknights.devigation.common.filter;
 
-import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
-import com.darknights.devigation.security.command.domain.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class AuthenticationExceptionFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver resolver;
@@ -37,12 +33,12 @@ public class AuthenticationExceptionFilter extends OncePerRequestFilter {
 
     private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {
 
-        String requestUrl = null;
-        if(ex.getClass() == UserNotFoundException.class) {
-            requestUrl = "/oauth2/authorize/github";
-        } else if (ex.getClass() == OAuth2AuthenticationProcessingException.class) {
-            requestUrl = "추후 access token을 재발생하는 api url";
-        }
+//        String requestUrl = null;
+//        if(ex.getClass() == UserNotFoundException.class) {
+//            requestUrl = "/oauth2/authorize/github";
+//        } else if (ex.getClass() == OAuth2AuthenticationProcessingException.class) {
+//            requestUrl = "추후 access token을 재발생하는 api url";
+//        }
 
 //        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //        // response 상태 코드를 401로 설정
