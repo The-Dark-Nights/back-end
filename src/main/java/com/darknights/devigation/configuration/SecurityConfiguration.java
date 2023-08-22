@@ -1,6 +1,7 @@
 package com.darknights.devigation.configuration;
 
 import com.darknights.devigation.common.filter.AuthenticationExceptionFilter;
+import com.darknights.devigation.common.filter.NullPointExceptionFilter;
 import com.darknights.devigation.common.filter.TokenAuthenticationFilter;
 import com.darknights.devigation.common.handler.CustomAccessDeniedHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -32,14 +33,15 @@ public class SecurityConfiguration {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomOAuth2FailHandler oAuth2AuthenticationFailureHandler;
-    // private final TokenAuthenticationFilter tokenAuthenticationFilter;
-    // private final AuthenticationExceptionFilter authenticationExceptionFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final NullPointExceptionFilter nullPointExceptionFilter;
 
     @Autowired
     @Qualifier("RestAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
+    @Autowired
     private CustomTokenService customTokenService;
+    @Autowired
     private CustomUserDetailService customUserDetailService;
     private HandlerExceptionResolver resolver;
 
@@ -48,7 +50,12 @@ public class SecurityConfiguration {
         return new AuthenticationExceptionFilter(resolver);
     }
 
-    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+//    NullPointExceptionFilter nullPointExceptionFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+//        return new NullPointExceptionFilter(resolver);
+//    }
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService,
+                                                        CustomUserDetailService customUserDetailService) {
         return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
     }
 
@@ -108,6 +115,8 @@ public class SecurityConfiguration {
                 )
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
                 .csrf().disable()
+                .cors()
+                .and()
                 .requestCache().disable()
                 .securityContext().disable()
                 .sessionManagement().disable();
@@ -134,8 +143,8 @@ public class SecurityConfiguration {
 
                 .authorizeRequests()
                     .antMatchers("/oauth2/**")
-                        .permitAll()
-                    .antMatchers("/blog/**")
+                        .hasRole(Role.MEMBER.name())
+                    .antMatchers("/blog/**", "/member/**")
                         .permitAll()
                     .antMatchers("/admin/**")
                         .hasRole(Role.BAN.name())
@@ -160,7 +169,8 @@ public class SecurityConfiguration {
 
         http
                 .addFilterBefore(tokenAuthenticationFilter(customTokenService, customUserDetailService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(authenticationExceptionFilter(resolver), TokenAuthenticationFilter.class);
+                .addFilterBefore(authenticationExceptionFilter(resolver), TokenAuthenticationFilter.class)
+                .addFilterBefore(nullPointExceptionFilter, AuthenticationExceptionFilter.class);
 
         return http.build();
     }

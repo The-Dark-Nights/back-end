@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -41,9 +42,12 @@ class TokenAuthenticationFilterTest {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+    private HandlerExceptionResolver resolver;
 
 
-    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService,
+                                                        CustomUserDetailService customUserDetailService) {
         return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
     }
 

@@ -1,6 +1,7 @@
 package com.darknights.devigation.common.filter;
 
 import com.darknights.devigation.security.command.application.service.CustomUserDetailService;
+import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final CustomUserDetailService customUserDetailService;
 
-    public TokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+    public TokenAuthenticationFilter(CustomTokenService customTokenService,
+                                     CustomUserDetailService customUserDetailService) {
         this.customTokenService = customTokenService;
         this.customUserDetailService = customUserDetailService;
     }
@@ -30,20 +32,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && customTokenService.validateToken(jwt)) {
-                Long userId = customTokenService.getUserIdFromToken(jwt);
+        String jwt = getJwtFromRequest(request);
+        if (StringUtils.hasText(jwt) && customTokenService.validateToken(jwt)) {
+            Long userId = customTokenService.getUserIdFromToken(jwt);
+            UserDetails userDetails = customUserDetailService.loadUserById(userId);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                UserDetails userDetails = customUserDetailService.loadUserById(userId);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (Exception e) {
-            System.out.println("Could not set user authentication in security context : " + e.getMessage());
-            throw e;
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
@@ -53,7 +49,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        } else {
+            throw new OAuth2AuthenticationProcessingException("JWT 토큰이 존재하지 않습니다.");
         }
-        return null;
     }
 }
