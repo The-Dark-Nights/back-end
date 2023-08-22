@@ -1,4 +1,7 @@
 package com.darknights.devigation.roadmap.command.domain.RoadmapRepository;
 
-public class RoadmapEdgeRepository {
+import com.darknights.devigation.roadmap.command.domain.aggregate.entity.RoadmapEdge;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoadmapEdgeRepository extends JpaRepository<RoadmapEdge,Long> {
 }

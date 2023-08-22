@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.xml.stream.events.StartDocument;
 
 @Entity
 @Table(name="ROADMAP_EDGE_TB")
@@ -28,4 +29,12 @@ public class RoadmapEdge {
 
     @Embedded
     private TargetCategoryVO targetCategoryId;
+
+    public RoadmapEdge(long roadmapId, String edgeId,long sourceCategoryId,long targetCategoryId) {
+        this.roadmapId = new RoadmapVO(roadmapId);
+        this.edgeId = edgeId;
+        this.sourceCategoryId = new SourceCategoryVO(sourceCategoryId);
+        this.targetCategoryId = new TargetCategoryVO(targetCategoryId);
+    }
 }
+
