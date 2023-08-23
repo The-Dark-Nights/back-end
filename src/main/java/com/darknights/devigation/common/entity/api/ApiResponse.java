@@ -1,5 +1,6 @@
 package com.darknights.devigation.common.entity.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -15,8 +16,6 @@ public class ApiResponse {
     public int status;
     public String message;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     public LocalDateTime timestamp = LocalDateTime.now();
 
     public ApiResponse() {}
