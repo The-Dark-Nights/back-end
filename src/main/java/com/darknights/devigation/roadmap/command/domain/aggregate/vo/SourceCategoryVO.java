@@ -10,11 +10,11 @@ import javax.persistence.Embeddable;
 @Getter
 @Embeddable
 @NoArgsConstructor
-public class ParentCategoryVO {
-    @Column(name = "parent_category_id")
+public class SourceCategoryVO {
+    @Column(name = "source_category_id", nullable = false)
     private long id;
 
-    public ParentCategoryVO(long id){
+    public SourceCategoryVO(long id){
         this. id =id;
     }
 }
