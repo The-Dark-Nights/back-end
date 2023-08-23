@@ -6,6 +6,7 @@ import com.darknights.devigation.member.command.application.service.CreateMember
 import com.darknights.devigation.member.command.domain.aggregate.entity.Member;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.PlatformEnum;
 import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
+import com.darknights.devigation.member.command.domain.repository.MemberRepository;
 import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import com.darknights.devigation.security.command.domain.exception.UserNotFoundException;
 import com.darknights.devigation.security.command.domain.service.CustomTokenService;
@@ -43,6 +44,9 @@ public class AuthControllerAdviceIntegrationTest {
 
     @Autowired
     private CreateMemberService createMemberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @DisplayName("존재하지 않는 url 요청시 NOT_FOUND ErrorResponse를 응답하는지 테스트")
     @Test
@@ -145,6 +149,7 @@ public class AuthControllerAdviceIntegrationTest {
                 new HttpEntity<>(headers);
 
         ResponseEntity<ErrorResponse> errorResponse = restTemplate.exchange("/admin/", HttpMethod.GET,request,ErrorResponse.class);
+        memberRepository.delete(member);
         Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
         Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(AccessDeniedException.class.getSimpleName());
         Assertions.assertThat(errorResponse.getBody().getApiResponse().getMessage()).isEqualTo("API에 접근할 권한이 없습니다.");
