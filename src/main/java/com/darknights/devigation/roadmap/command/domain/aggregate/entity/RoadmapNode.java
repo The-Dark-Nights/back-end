@@ -18,13 +18,18 @@ public class RoadmapNode {
     private Long id;
 
     @Embedded
-    private CategoryVO categoryId;
+    private RoadmapVO roadmapId;
 
     @Embedded
-    private RoadmapVO roadmapId;
+    private CategoryVO categoryId;
+
 
     @Column(nullable = false)
     private String position;
 
-
+    public RoadmapNode(long roadmapId,long categoryId, String position) {
+        this.roadmapId = new RoadmapVO(roadmapId);
+        this.categoryId = new CategoryVO(categoryId);
+        this.position = position;
+    }
 }

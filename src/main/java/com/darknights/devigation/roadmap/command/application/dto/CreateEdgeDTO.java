@@ -1,5 +1,6 @@
 package com.darknights.devigation.roadmap.command.application.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class SaveNodeDTO {
+public class CreateEdgeDTO {
     private long roadmapId;
-    private long categoryId;
-    private String position;
+    private String EdgeId;
+    private long sourceCategory;
+    private long targetCategory;
 }
