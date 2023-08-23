@@ -9,13 +9,12 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@JsonPropertyOrder({ "status", "message", "timestamp", "result.*" })
+@JsonPropertyOrder({ "status", "message", "timestamp", "result.*"})
 public class ErrorResponse {
 
     @JsonUnwrapped // 래핑 해제/평면화 되어야 하는 값을 정의
     private ApiResponse apiResponse;
     private ErrorResponseBody result;
-
     public ErrorResponse() {}
 
     public ErrorResponse(ApiResponse apiResponse, ErrorResponseBody errorResponseBody) {

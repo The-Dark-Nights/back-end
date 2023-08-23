@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class AuthControllerAdvice {
@@ -65,11 +67,11 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
+
         ApiResponse apiResponse = new ApiResponse()
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
-
 
         ErrorResponse errorResponse = new ErrorResponse()
                 .setApiResponse(apiResponse)
@@ -104,6 +106,7 @@ public class AuthControllerAdvice {
         ErrorResponseBody errorResponseBody = new ErrorResponseBody()
                 .setCode(HttpStatus.FORBIDDEN.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
+
 
         ApiResponse apiResponse = new ApiResponse()
                 .setStatus(HttpStatus.FORBIDDEN.value())

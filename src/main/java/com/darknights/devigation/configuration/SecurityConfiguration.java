@@ -24,6 +24,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @RequiredArgsConstructor
@@ -98,6 +101,12 @@ public class SecurityConfiguration {
     @Order(0)
     public SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
+                .csrf().disable()
+                .requestCache().disable()
+                .securityContext().disable()
+                .sessionManagement().disable()
                 .requestMatchers((matchers) ->
                         matchers
                                 .antMatchers(
@@ -113,16 +122,11 @@ public class SecurityConfiguration {
                                 "/login/**","/auth/**"
                             )
                 )
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
-                .csrf().disable()
-                .cors()
-                .and()
-                .requestCache().disable()
-                .securityContext().disable()
-                .sessionManagement().disable();
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
 
         return http.build();
     }
+
     @Bean
     @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
