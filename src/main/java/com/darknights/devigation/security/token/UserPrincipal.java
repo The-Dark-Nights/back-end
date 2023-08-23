@@ -1,6 +1,7 @@
 package com.darknights.devigation.security.token;
 
 import com.darknights.devigation.member.command.domain.aggregate.entity.Member;
+import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
 import com.darknights.devigation.member.query.application.dto.FindMemberDTO;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -70,15 +71,15 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     public static UserPrincipal create(Member member, Map<String, Object> attributes) {
-        return UserPrincipal.builder(member.getId(), member.getName(), member.getRole().name(), attributes).build();
+        return UserPrincipal.builder(member.getId(), member.getName(), Role.valueOf(member.getRole().name()).getKey(), attributes).build();
     }
 
     public static UserPrincipal create(FindMemberDTO member, Map<String, Object> attributes) {
-        return UserPrincipal.builder(member.getId(), member.getName(), member.getRole(), attributes).build();
+        return UserPrincipal.builder(member.getId(), member.getName(), Role.valueOf(member.getRole()).getKey(), attributes).build();
     }
 
     public static UserPrincipal create(FindMemberDTO member) {
-        return UserPrincipal.builder(member.getId(), member.getName(), member.getRole()).build();
+        return UserPrincipal.builder(member.getId(), member.getName(), Role.valueOf(member.getRole()).getKey()).build();
     }
 
     @Override

@@ -19,11 +19,14 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static org.mockito.Mockito.*;
@@ -41,9 +44,12 @@ class TokenAuthenticationFilterTest {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+    private HandlerExceptionResolver resolver;
 
 
-    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService,
+                                                        CustomUserDetailService customUserDetailService) {
         return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
     }
 
@@ -119,7 +125,7 @@ class TokenAuthenticationFilterTest {
 
         Assertions.assertEquals(principal.getId(), member.getId());
         Assertions.assertEquals(principal.getName(), member.getName());
-        Assertions.assertEquals(principal.getRole(), member.getRole().name());
+        Assertions.assertEquals(principal.getRole(), member.getRole().getKey());
     }
 
 }
