@@ -4,6 +4,7 @@ package com.darknights.devigation.common.advice;
 import com.darknights.devigation.common.entity.api.ApiResponse;
 import com.darknights.devigation.common.entity.error.ErrorResponseBody;
 import com.darknights.devigation.common.entity.error.ErrorResponse;
+import com.darknights.devigation.common.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestControllerAdvice
 public class AuthControllerAdvice {
@@ -39,6 +38,26 @@ public class AuthControllerAdvice {
                 .setApiResponse(apiResponse)
                 .setResult(errorResponseBody);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorResponse);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    protected ResponseEntity<ErrorResponse> handleBadRequestException(
+            MissingRequestHeaderException ex) {
+
+        ErrorResponseBody errorResponseBody = new ErrorResponseBody()
+                .setCode(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .setClasses(ex.getClass().getSimpleName());
+
+        ApiResponse apiResponse = new ApiResponse()
+                .setStatus(HttpStatus.BAD_REQUEST.value())
+                .setMessage(ex.getLocalizedMessage())
+                .setTimestamp(LocalDateTime.now());
+
+
+        ErrorResponse errorResponse = new ErrorResponse()
+                .setApiResponse(apiResponse)
+                .setResult(errorResponseBody);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
