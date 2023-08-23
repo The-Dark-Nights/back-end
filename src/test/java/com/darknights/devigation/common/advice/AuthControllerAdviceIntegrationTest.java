@@ -51,7 +51,12 @@ public class AuthControllerAdviceIntegrationTest {
     @DisplayName("존재하지 않는 url 요청시 NOT_FOUND ErrorResponse를 응답하는지 테스트")
     @Test
     void testThrowNullPointerException() {
-        ResponseEntity<ErrorResponse> errorResponse = restTemplate.getForEntity("/auth", ErrorResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request =
+                new HttpEntity<>(headers);
+        ResponseEntity<ErrorResponse> errorResponse = restTemplate.exchange("/auth",HttpMethod.GET,request, ErrorResponse.class);
+        System.out.println("errorResponse.getBody().getApiResponse().getTimestamp() = " + errorResponse.getBody().getApiResponse().getTimestamp());
         Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(NoHandlerFoundException.class.getSimpleName());
     }
@@ -59,7 +64,11 @@ public class AuthControllerAdviceIntegrationTest {
     @DisplayName("유효하지 않는 Http 메소드 요청시 METHOD_NOT_ALLOWED ErrorResponse를 응답하는지 테스트")
     @Test
     void testHttpRequestMethodNotSupportedException() {
-        ResponseEntity<ErrorResponse> errorResponse = restTemplate.getForEntity("/auth/token", ErrorResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request =
+                new HttpEntity<>(headers);
+        ResponseEntity<ErrorResponse> errorResponse = restTemplate.exchange("/auth/token",HttpMethod.GET,request, ErrorResponse.class);
         Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
         Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(HttpRequestMethodNotSupportedException.class.getSimpleName());
     }
