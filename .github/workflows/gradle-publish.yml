@@ -28,6 +28,11 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Seoul"
+
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
