@@ -1,6 +1,5 @@
 package com.darknights.devigation.common.filter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,7 +15,6 @@ public class AuthenticationExceptionFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver resolver;
 
-    @Autowired
     public AuthenticationExceptionFilter(@Qualifier("handlerExceptionResolver")  HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
@@ -31,7 +29,7 @@ public class AuthenticationExceptionFilter extends OncePerRequestFilter {
         }
     }
 
-    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {
+    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) {
 
 //        String requestUrl = null;
 //        if(ex.getClass() == UserNotFoundException.class) {

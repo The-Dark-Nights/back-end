@@ -24,9 +24,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @RequiredArgsConstructor
@@ -41,15 +38,19 @@ public class SecurityConfiguration {
 
     @Autowired
     @Qualifier("RestAuthenticationEntryPoint")
-    AuthenticationEntryPoint authEntryPoint;
+    private AuthenticationEntryPoint authEntryPoint;
+
     @Autowired
     private CustomTokenService customTokenService;
     @Autowired
     private CustomUserDetailService customUserDetailService;
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
 
 
-    AuthenticationExceptionFilter authenticationExceptionFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+
+    AuthenticationExceptionFilter authenticationExceptionFilter(HandlerExceptionResolver resolver) {
         return new AuthenticationExceptionFilter(resolver);
     }
 
@@ -151,7 +152,7 @@ public class SecurityConfiguration {
                     .antMatchers("/blog/**", "/member/**")
                         .permitAll()
                     .antMatchers("/admin/**")
-                        .hasRole(Role.BAN.name())
+                        .hasRole(Role.ADMIN.name())
                     .and()
                 .oauth2Login()
                     .authorizationEndpoint()
