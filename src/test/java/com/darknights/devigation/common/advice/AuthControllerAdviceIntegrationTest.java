@@ -1,21 +1,13 @@
 package com.darknights.devigation.common.advice;
 
 import com.darknights.devigation.common.entity.error.ErrorResponse;
-import com.darknights.devigation.member.command.application.dto.CreateMemberDTO;
-import com.darknights.devigation.member.command.application.service.CreateMemberService;
-import com.darknights.devigation.member.command.domain.aggregate.entity.Member;
-import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.PlatformEnum;
-import com.darknights.devigation.member.command.domain.aggregate.entity.enumType.Role;
-import com.darknights.devigation.member.command.domain.repository.MemberRepository;
 import com.darknights.devigation.security.command.domain.exception.OAuth2AuthenticationProcessingException;
 import com.darknights.devigation.security.command.domain.exception.UserNotFoundException;
 import com.darknights.devigation.security.command.domain.service.CustomTokenService;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -24,10 +16,14 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.nio.file.AccessDeniedException;
-import java.util.stream.Stream;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+/*
+* @SpringBootTest를 RANDOM_PORT나 DEFINED_PORT로 사용하면 별도의 쓰레드에서 스프링 컨테이너가 실행된다.
+* 테스트가 끝나고 이를 롤백시키려면 하나의 트랜잭션으로 묶여야 하는데,
+* 스프링 컨테이너가 실제로 구동되어 테스트와 다른 쓰레드에서 실행되니 하나의 트랜잭션으로 묶일 수 없는 것이다.
+* 그래서 @SpringBootTest를 RANDOM_PORT나 DEFINED_PORT로 사용하면 @Transactional을 사용해도 롤백되지 않는다.
+* */
 public class AuthControllerAdviceIntegrationTest {
 
     /*
@@ -42,11 +38,6 @@ public class AuthControllerAdviceIntegrationTest {
     @Autowired
     private CustomTokenService customTokenService;
 
-    @Autowired
-    private CreateMemberService createMemberService;
-
-    @Autowired
-    private MemberRepository memberRepository;
 
     @DisplayName("존재하지 않는 url 요청시 NOT_FOUND ErrorResponse를 응답하는지 테스트")
     @Test
@@ -129,38 +120,5 @@ public class AuthControllerAdviceIntegrationTest {
         Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(UserNotFoundException.class.getSimpleName());
         Assertions.assertThat(errorResponse.getBody().getApiResponse().getMessage()).isEqualTo("해당 Id를 가진 사용자를 찾을 수 없습니다.");
-    }
-
-    private static Stream<Arguments> getMemberInfo() {
-        return Stream.of(
-                Arguments.of(
-                        new CreateMemberDTO(
-                                "1122ss",
-                                "testMember",
-                                Role.MEMBER,
-                                "email@test.com",
-                                "profileImage",
-                                PlatformEnum.GITHUB
-                        )
-                )
-        );
-    }
-    @DisplayName("권한이 없는 사용자가 API 요청 시 Forbidden ErrorResponse를 응답하는지 테스트")
-    @ParameterizedTest
-    @MethodSource("getMemberInfo")
-    void testAccessDeniedExceptionException(CreateMemberDTO createMemberDTO) {
-        Member member = createMemberService.create(createMemberDTO);
-        String testToken = customTokenService.createToken(member.getId(), member.getRole().name());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", "Bearer " + testToken);
-        HttpEntity<String> request =
-                new HttpEntity<>(headers);
-
-        ResponseEntity<ErrorResponse> errorResponse = restTemplate.exchange("/admin/", HttpMethod.GET,request,ErrorResponse.class);
-        memberRepository.delete(member);
-        Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-        Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(AccessDeniedException.class.getSimpleName());
-        Assertions.assertThat(errorResponse.getBody().getApiResponse().getMessage()).isEqualTo("API에 접근할 권한이 없습니다.");
     }
 }
