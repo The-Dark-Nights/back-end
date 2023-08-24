@@ -1,6 +1,7 @@
 package com.darknights.devigation.aws.command.application.service;
 
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.darknights.devigation.config.AwsS3MockConfig;
 import io.findify.s3mock.S3Mock;
@@ -25,14 +26,10 @@ public class AwsS3ServiceTests {
     private S3Mock s3Mock;
 
     @Autowired
-    private AmazonS3Client amazonS3Client;
-
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-
-
+    private AmazonS3 amazonS3;
     @AfterEach
     public void tearDown() {
+        amazonS3.shutdown();
         s3Mock.stop();
     }
 
