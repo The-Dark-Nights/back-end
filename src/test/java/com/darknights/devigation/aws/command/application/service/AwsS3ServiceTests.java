@@ -2,38 +2,21 @@ package com.darknights.devigation.aws.command.application.service;
 
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.darknights.devigation.config.AwsS3MockConfig;
-import com.darknights.devigation.configuration.AwsS3Config;
 import io.findify.s3mock.S3Mock;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.nio.charset.StandardCharsets;
 
-//@Import(AwsS3Config.class)
-// @Configuration 선언된 스프링 설정 클래스 가져오는 것
 @SpringBootTest
 public class AwsS3ServiceTests {
 
     @Autowired
     private AwsS3Service awsS3Service;
 
-    @Autowired
-    private S3Mock s3Mock;
 
-    @Autowired
-    private AmazonS3 amazonS3;
-
-//    @AfterEach
-//    public void tearDown() {
-//        amazonS3.shutdown();
-//        s3Mock.stop();
-//    }
 
     @DisplayName("Aws S3 이미지 업로드 테스트")
     @Test
