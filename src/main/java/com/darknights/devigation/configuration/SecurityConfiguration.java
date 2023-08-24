@@ -1,6 +1,7 @@
 package com.darknights.devigation.configuration;
 
 import com.darknights.devigation.common.filter.AuthenticationExceptionFilter;
+import com.darknights.devigation.common.filter.NullPointExceptionFilter;
 import com.darknights.devigation.common.filter.TokenAuthenticationFilter;
 import com.darknights.devigation.common.handler.CustomAccessDeniedHandler;
 import com.darknights.devigation.common.handler.CustomOAuth2FailHandler;
@@ -17,12 +18,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @RequiredArgsConstructor
@@ -32,14 +36,15 @@ public class SecurityConfiguration {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomOAuth2FailHandler oAuth2AuthenticationFailureHandler;
-    // private final TokenAuthenticationFilter tokenAuthenticationFilter;
-    // private final AuthenticationExceptionFilter authenticationExceptionFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final NullPointExceptionFilter nullPointExceptionFilter;
 
     @Autowired
     @Qualifier("RestAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
+    @Autowired
     private CustomTokenService customTokenService;
+    @Autowired
     private CustomUserDetailService customUserDetailService;
     private HandlerExceptionResolver resolver;
 
@@ -48,7 +53,12 @@ public class SecurityConfiguration {
         return new AuthenticationExceptionFilter(resolver);
     }
 
-    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService, CustomUserDetailService customUserDetailService) {
+//    NullPointExceptionFilter nullPointExceptionFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+//        return new NullPointExceptionFilter(resolver);
+//    }
+
+    TokenAuthenticationFilter tokenAuthenticationFilter(CustomTokenService customTokenService,
+                                                        CustomUserDetailService customUserDetailService) {
         return new TokenAuthenticationFilter(customTokenService, customUserDetailService);
     }
 
@@ -91,6 +101,12 @@ public class SecurityConfiguration {
     @Order(0)
     public SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
+                .csrf().disable()
+                .requestCache().disable()
+                .securityContext().disable()
+                .sessionManagement().disable()
                 .requestMatchers((matchers) ->
                         matchers
                                 .antMatchers(
@@ -106,14 +122,11 @@ public class SecurityConfiguration {
                                 "/login/**","/auth/**"
                             )
                 )
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
-                .csrf().disable()
-                .requestCache().disable()
-                .securityContext().disable()
-                .sessionManagement().disable();
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
 
         return http.build();
     }
+
     @Bean
     @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -134,8 +147,8 @@ public class SecurityConfiguration {
 
                 .authorizeRequests()
                     .antMatchers("/oauth2/**")
-                        .permitAll()
-                    .antMatchers("/blog/**")
+                        .hasRole(Role.MEMBER.name())
+                    .antMatchers("/blog/**", "/member/**")
                         .permitAll()
                     .antMatchers("/admin/**")
                         .hasRole(Role.BAN.name())
@@ -160,7 +173,8 @@ public class SecurityConfiguration {
 
         http
                 .addFilterBefore(tokenAuthenticationFilter(customTokenService, customUserDetailService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(authenticationExceptionFilter(resolver), TokenAuthenticationFilter.class);
+                .addFilterBefore(authenticationExceptionFilter(resolver), TokenAuthenticationFilter.class)
+                .addFilterBefore(nullPointExceptionFilter, AuthenticationExceptionFilter.class);
 
         return http.build();
     }

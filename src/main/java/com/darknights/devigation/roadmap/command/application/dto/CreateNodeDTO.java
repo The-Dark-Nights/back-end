@@ -3,15 +3,14 @@ package com.darknights.devigation.roadmap.command.application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UpdateRoadmapCategoryDTO {
-    private long id;
-    private long categoryId;
+@ToString
+public class CreateNodeDTO {
     private long roadmapId;
+    private long categoryId;
     private String position;
-    private long childCategoryId;
-    private long parentCategoryId;
 }

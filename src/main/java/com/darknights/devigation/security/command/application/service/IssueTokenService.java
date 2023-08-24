@@ -3,6 +3,7 @@ package com.darknights.devigation.security.command.application.service;
 import com.darknights.devigation.member.query.application.dto.FindMemberDTO;
 import com.darknights.devigation.security.command.domain.aggregate.entity.Token;
 import com.darknights.devigation.security.command.domain.aggregate.vo.MemberVO;
+import com.darknights.devigation.security.command.domain.exception.TokenNotFoundException;
 import com.darknights.devigation.security.command.domain.repository.TokenRepository;
 import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import com.darknights.devigation.security.command.domain.service.RequestMember;
@@ -48,7 +49,7 @@ public class IssueTokenService {
     @Transactional
     public String issueTokenByAccessToken(String accessToken) {
         Token findToken = tokenRepository.findTokenByAccessToken(accessToken).orElseThrow(
-                () -> new IllegalArgumentException("Can't find data")
+                () -> new TokenNotFoundException("해당 Access Token은 폐기된 토큰입니다.")
         );
         long memberId = findToken.getMember().getId();
 

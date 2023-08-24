@@ -1,10 +1,10 @@
 package com.darknights.devigation.common.handler;
 
 
+import com.darknights.devigation.common.exception.BadRequestException;
 import com.darknights.devigation.configuration.AppProperties;
 import com.darknights.devigation.security.command.application.service.IssueTokenService;
 import com.darknights.devigation.security.command.domain.aggregate.util.CookieUtils;
-import com.darknights.devigation.security.command.domain.exception.BadRequestException;
 import com.darknights.devigation.security.command.domain.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.darknights.devigation.security.token.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;

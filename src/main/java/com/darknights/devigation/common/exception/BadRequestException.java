@@ -1,4 +1,4 @@
-package com.darknights.devigation.security.command.domain.exception;
+package com.darknights.devigation.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
