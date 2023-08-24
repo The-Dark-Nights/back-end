@@ -52,6 +52,14 @@ jobs:
         run: echo "${{ secrets.APPLICATION_OAUTH }}" > ./src/main/resources/application-oauth.yml
         shell: bash
 
+      - name: make application-aws.yml
+        run:
+          touch ./src/main/resources/application-aws.yml
+        shell: bash
+      - name: deliver application-aws.yml
+        run: echo "${{ secrets.APPLICATION_AWS }}" > ./src/main/resources/application-aws.yml
+        shell: bash
+
       - name: Add permission
         run: chmod +x gradlew
 

@@ -10,7 +10,13 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @EnableJpaAuditing
-@SpringBootApplication
+@SpringBootApplication(
+        exclude = {
+                org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
+                org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
+                org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
+        }
+)
 @EnableConfigurationProperties(AppProperties.class)
 public class DevigationApplication {
 
@@ -23,5 +29,4 @@ public class DevigationApplication {
 
         SpringApplication.run(DevigationApplication.class, args);
     }
-
 }
