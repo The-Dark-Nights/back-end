@@ -11,9 +11,7 @@ import com.darknights.devigation.security.command.application.service.CustomUser
 import com.darknights.devigation.security.command.domain.service.CustomTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
@@ -34,7 +31,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -56,8 +52,23 @@ public class SecurityAdviceIntegrationTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    private String testToken;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
+
+        FindMemberDTO mockFindMemberDTO = new FindMemberDTO(
+                0L,
+                "mockName",
+                "email@test.com",
+                "profileImage",
+                PlatformEnum.GITHUB.name(),
+                Role.MEMBER.name()
+        );
+
+        when(findMemberService.findById(0L)).thenReturn(mockFindMemberDTO);
+
+        testToken = customTokenService.createToken(mockFindMemberDTO.getId(), mockFindMemberDTO.getRole());
 
         // mvc
         mockMvc = MockMvcBuilders
@@ -68,29 +79,10 @@ public class SecurityAdviceIntegrationTest {
 
     }
 
-    private static Stream<Arguments> getMemberInfo() {
-        return Stream.of(
-                Arguments.of(
-                        new FindMemberDTO(
-                                0L,
-                                "mockName",
-                                "email@test.com",
-                                "profileImage",
-                                PlatformEnum.GITHUB.name(),
-                                Role.MEMBER.name()
-                        )
-                )
-        );
-    }
-
     @DisplayName("권한이 없는 사용자가 API 요청 시 Forbidden ErrorResponse를 응답하는지 테스트")
-    @ParameterizedTest
-    @MethodSource("getMemberInfo")
-    void testAccessDeniedExceptionException(FindMemberDTO findMemberDTO) throws Exception {
+    @Test
+    void testAccessDeniedExceptionException() throws Exception {
 
-        when(findMemberService.findById(0L)).thenReturn(findMemberDTO);
-
-        String testToken = customTokenService.createToken(findMemberDTO.getId(), findMemberDTO.getRole());
         mockMvc.perform(
                 get("/admin")
                         .header("Authorization", "Bearer " + testToken)
