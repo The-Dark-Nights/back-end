@@ -37,7 +37,6 @@ public class RoadmapCategoryService {
         JSONArray nodeInfos = (JSONArray) object.get("nodes");
         long roadmapId =Long.parseLong (param.get("roadmapId"));
 
-        int nodeNum = nodeInfos.size();
         for (Object nodeInfo : nodeInfos) {
             JSONObject node = (JSONObject) nodeInfo;
             long categoryId = Long.parseLong((String) node.get("id"));
@@ -46,7 +45,6 @@ public class RoadmapCategoryService {
         }
 
         JSONArray edgeInfos = (JSONArray) object.get("edges");
-        int edgeNum = edgeInfos.size();
         for (Object edgeInfo : edgeInfos) {
             JSONObject edge = (JSONObject) edgeInfo;
             String edgeId = (String) edge.get("id");
