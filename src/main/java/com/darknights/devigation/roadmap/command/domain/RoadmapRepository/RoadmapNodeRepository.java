@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RoadmapNodeRepository extends JpaRepository<RoadmapNode,Long> {
     void deleteRoadmapNodesByRoadmapId_Id(long roadmapId);
-    Optional<RoadmapNode> findAllByRoadmapId_Id(long roadmapId);
+    List<Optional<RoadmapNode>> findAllByRoadmapId_Id(long roadmapId);
 }

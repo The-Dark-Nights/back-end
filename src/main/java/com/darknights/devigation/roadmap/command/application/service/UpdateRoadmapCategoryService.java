@@ -22,10 +22,9 @@ public class UpdateRoadmapCategoryService {
 
     @Transactional
     public boolean updateRoadmapCategory(List<CreateNodeDTO> createNodeDTOS, List<CreateEdgeDTO> createEdgeDTOS, long roadmapId){
-        deleteRoadmapCategoryService.deleteRoadmapCategory(roadmapId);
-        createRoadmapCategoryService.createRoadmapCategory(createNodeDTOS,createEdgeDTOS);
-
-
+        if(deleteRoadmapCategoryService.deleteRoadmapCategory(roadmapId)){
+            if(createRoadmapCategoryService.createRoadmapCategory(createNodeDTOS,createEdgeDTOS))return true;
+        }
         return true;
     }
 }

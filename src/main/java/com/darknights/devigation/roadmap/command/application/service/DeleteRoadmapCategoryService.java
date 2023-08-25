@@ -18,8 +18,13 @@ public class DeleteRoadmapCategoryService {
     }
 
     @Transactional
-    public void deleteRoadmapCategory(long roadmapId){
-        roadmapEdgeRepository.deleteRoadmapEdgesByRoadmapId_Id(roadmapId);
-        roadmapNodeRepository.deleteRoadmapNodesByRoadmapId_Id(roadmapId);
+    public boolean deleteRoadmapCategory(long roadmapId) {
+        if (roadmapNodeRepository.findAllByRoadmapId_Id(roadmapId).size() > 0) {
+            roadmapEdgeRepository.deleteRoadmapEdgesByRoadmapId_Id(roadmapId);
+            roadmapNodeRepository.deleteRoadmapNodesByRoadmapId_Id(roadmapId);
+            return true;
+        }
+
+        return false;
     }
 }
