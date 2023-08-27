@@ -119,6 +119,6 @@ public class AuthControllerAdviceIntegrationTest {
         ResponseEntity<ErrorResponse> errorResponse = restTemplate.exchange("/admin", HttpMethod.GET,request,ErrorResponse.class);
         Assertions.assertThat(errorResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         Assertions.assertThat(errorResponse.getBody().getResult().getClasses()).isEqualTo(UserNotFoundException.class.getSimpleName());
-        Assertions.assertThat(errorResponse.getBody().getApiResponse().getMessage()).isEqualTo("해당 Id를 가진 사용자를 찾을 수 없습니다.");
+        Assertions.assertThat(errorResponse.getBody().getApiResponse().getMessage()).isEqualTo("사용자가 존재하지 않습니다.");
     }
 }

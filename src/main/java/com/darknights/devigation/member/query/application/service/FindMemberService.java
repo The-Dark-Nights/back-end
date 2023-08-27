@@ -1,5 +1,6 @@
 package com.darknights.devigation.member.query.application.service;
 
+import com.darknights.devigation.common.exception.assertion.ExceptionAssert;
 import com.darknights.devigation.member.query.application.dto.FindMemberDTO;
 import com.darknights.devigation.member.query.domain.aggregate.entity.QueryMember;
 import com.darknights.devigation.member.query.domain.repository.MemberMapper;
@@ -34,6 +35,7 @@ public class FindMemberService {
 
     public FindMemberDTO findByAccessToken(String accessToken) {
         QueryMember findMember = memberMapper.findByAccessToken(accessToken);
+        ExceptionAssert.isUserExist(findMember);
         return new FindMemberDTO(
                 findMember.getId(),
                 findMember.getName(),
@@ -48,9 +50,7 @@ public class FindMemberService {
 
         QueryMember findMember = memberMapper.findById(memberId);
 
-        if(findMember == null) {
-            throw new UserNotFoundException("해당 Id를 가진 사용자를 찾을 수 없습니다.");
-        }
+        ExceptionAssert.isUserExist(findMember);
 
         return new FindMemberDTO(
                 findMember.getId(),
@@ -65,6 +65,7 @@ public class FindMemberService {
     public FindMemberDTO  findByEmail(String email) {
 
         QueryMember findMember = memberMapper.findByEmail(email);
+        ExceptionAssert.isUserExist(findMember);
 
         return new FindMemberDTO(
                 findMember.getId(),
