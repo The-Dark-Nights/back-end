@@ -71,7 +71,7 @@ public class AwsS3Service {
 
     private String getFileExtension(String fileName) {
         String extension = fileName.substring(fileName.lastIndexOf("."));
-        if (extension.equals(".png") || extension.equals(".jpg") || extension.equals(".jpeg")) {
+        if (extension.equals(".png") || extension.equals(".jpg") || extension.equals(".jpeg") || extension.equals(".gif")) {
             return extension;
         }
         return null;
