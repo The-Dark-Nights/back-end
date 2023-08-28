@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.darknights.devigation.roadmap.query.domain.repository.RoadmapCategoryMapper">
-    <resultMap id="QueryRoadmapCategoryMap" type="com.darknights.devigation.roadmap.query.domain.aggregate.entity.QueryRoadmapCategory">
+<mapper namespace="com.darknights.devigation.domain.roadmap.query.domain.repository.RoadmapCategoryMapper">
+    <resultMap id="QueryRoadmapCategoryMap" type="com.darknights.devigation.domain.roadmap.query.domain.aggregate.entity.QueryRoadmapCategory">
         <id property="id" column="id" />
         <result property="categoryId" column="category_id"/>
         <result property="roadmapId" column="roadmap_id"/>
