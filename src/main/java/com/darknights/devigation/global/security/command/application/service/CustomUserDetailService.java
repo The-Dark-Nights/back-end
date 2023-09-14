@@ -23,6 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         FindMemberDTO member = findMemberService.findByEmail(email);
+        System.out.println("member = " + member);
         return UserPrincipal.create(member);
     }
 
