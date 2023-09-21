@@ -12,8 +12,8 @@ import java.nio.charset.StandardCharsets;
 @SpringBootTest
 public class AwsS3ServiceTests {
 
-    @Autowired
-    private AwsS3Service awsS3Service;
+//    @Autowired
+//    private AwsS3Service awsS3Service;
 
 //    @DisplayName("Aws S3 이미지 업로드 테스트")
 //    @Test
