@@ -2,16 +2,24 @@ package com.darknights.devigation.infra.aws.command.application.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import marvin.image.MarvinImage;
+import org.marvinproject.image.transform.scale.Scale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+
+
 
 @Service
 public class AwsS3Service {
@@ -31,6 +39,9 @@ public class AwsS3Service {
 
         String fileName = createFileName(multipartFiles.getOriginalFilename());
         // UUID 파일명 생성
+        String fileFormatName = multipartFiles.getContentType().substring(multipartFiles.getContentType().lastIndexOf("/")+1);
+
+        MultipartFile resizedFile = resizeImage(fileName, fileFormatName, multipartFiles, 768);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         // 객체를 생성해 파일에 대한 메타데이터 설정
         objectMetadata.setContentLength(multipartFiles.getSize());
@@ -81,6 +92,36 @@ public class AwsS3Service {
 
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
 
+    }
+
+    MultipartFile resizeImage(String fileName, String fileFormatName, MultipartFile originalImage, int targetWidth) {
+        try {
+            BufferedImage image = ImageIO.read(originalImage.getInputStream());
+
+            int originWidth = image.getWidth();
+            int originHeight = image.getHeight();
+
+            // 원래 사이즈가 기준 width보다 작을 경우는 resizing 하지 않는다.
+            if (originWidth < targetWidth) {
+                return originalImage;
+            }
+            MarvinImage imageMarvin = new MarvinImage(image);
+
+            Scale scale = new Scale();
+            scale.load();
+            scale.setAttribute("newWidth", targetWidth);
+            scale.setAttribute("newHeight", targetWidth * originHeight / originWidth);
+            scale.process(imageMarvin.clone(), imageMarvin, null,null, false);
+
+            BufferedImage imageNoAlpha = imageMarvin.getBufferedImageNoAlpha();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(imageNoAlpha, fileFormatName, baos);
+            baos.flush();
+
+            return new MockMultipartFile(fileName, baos.toByteArray());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 리사이즈에 실패했습니다.");
+        }
     }
 }
 
