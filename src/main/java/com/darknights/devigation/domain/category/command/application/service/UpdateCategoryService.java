@@ -29,6 +29,9 @@ public class UpdateCategoryService {
             if(!updateCategoryDTO.getName().isEmpty()){
                 updateCategory.setName(updateCategoryDTO.getName());
             }
+            if(updateCategoryDTO.getClassification()!=null){
+                updateCategory.setClassification(updateCategoryDTO.getClassification());
+            }
             return true;
         }else{
             return false;

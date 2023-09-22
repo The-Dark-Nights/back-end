@@ -8,7 +8,12 @@ import com.darknights.devigation.global.common.annotation.DomainService;
 @DomainService
 public class CategoryService {
     public Category toCategoryEntity(CreateCategoryDTO createCategoryDTO){
-       return new Category(createCategoryDTO.getMemberId(),createCategoryDTO.getName());
+        if(createCategoryDTO.getClassification()==null) {
+            return new Category(createCategoryDTO.getMemberId(), createCategoryDTO.getName());
+        }
+        else{
+            return new Category(createCategoryDTO.getName(), createCategoryDTO.getMemberId(),createCategoryDTO.getClassification());
+        }
     }
     public Category toCategoryEntity(UpdateCategoryDTO updateCategoryDTO){
         return new Category(updateCategoryDTO.getMemberId(),updateCategoryDTO.getMemberId(),updateCategoryDTO.getName());

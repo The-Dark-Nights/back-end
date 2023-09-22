@@ -6,6 +6,7 @@ import com.darknights.devigation.domain.category.command.application.dto.UpdateC
 import com.darknights.devigation.domain.category.command.application.service.CreateCategoryService;
 import com.darknights.devigation.domain.category.command.application.service.DeleteCategoryService;
 import com.darknights.devigation.domain.category.command.application.service.UpdateCategoryService;
+import com.darknights.devigation.domain.category.command.domain.aggregate.entity.enumtype.Classification;
 import com.darknights.devigation.domain.category.command.domain.repository.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -50,6 +51,16 @@ public class CategoryServiceTests {
         );
     }
 
+    private static Stream<Arguments> getCategoryWithClassification() {
+        return Stream.of(
+                Arguments.of(
+                        "TestLanguage",
+                        1L,
+                        Classification.CLASS1
+                )
+        );
+    }
+
     @DisplayName("새로운 카테고리 추가 테스트")
     @ParameterizedTest
     @MethodSource("getCategory")
@@ -86,5 +97,14 @@ public class CategoryServiceTests {
             Assertions.fail();
         }
     }
+
+    @DisplayName("대분류 추가 후 카테고리 생성 테스트")
+    @ParameterizedTest
+    @MethodSource("getCategoryWithClassification")
+    void CreateCategoryWithClassification(String name, Long memberId, Classification classification){
+        CreateCategoryDTO createCategoryDTO = new CreateCategoryDTO(name,memberId,classification);
+        Assertions.assertNotNull(createCategoryService.createCategory(createCategoryDTO));
+    }
+
 }
 
