@@ -61,6 +61,17 @@ public class CategoryServiceTests {
         );
     }
 
+    private static Stream<Arguments> updateCategoryWithClassification() {
+        return Stream.of(
+                Arguments.of(
+                        "TestLanguage",
+                        1L,
+                        Classification.CLASS1,
+                        Classification.CLASS2
+                )
+        );
+    }
+
     @DisplayName("새로운 카테고리 추가 테스트")
     @ParameterizedTest
     @MethodSource("getCategory")
@@ -106,5 +117,19 @@ public class CategoryServiceTests {
         Assertions.assertNotNull(createCategoryService.createCategory(createCategoryDTO));
     }
 
+
+    @DisplayName("대분류 추가 후 카테고리 업데이트 테스트")
+    @ParameterizedTest
+    @MethodSource("updateCategoryWithClassification")
+    void updateCategoryTestWithClassification(String name, Long memberId, Classification classification, Classification newClass) {
+        CreateCategoryDTO createCategoryDTO = new CreateCategoryDTO(name, memberId,classification);
+        long id = createCategoryService.createCategory(createCategoryDTO).getId();
+        if (categoryRepository.findById(id).isPresent()) {
+            UpdateCategoryDTO updateCategoryDTO = new UpdateCategoryDTO(id, memberId,newClass);
+            Assertions.assertTrue(updateCategoryService.updateCategory(updateCategoryDTO));
+        }else{
+            Assertions.fail();
+        }
+    }
 }
 

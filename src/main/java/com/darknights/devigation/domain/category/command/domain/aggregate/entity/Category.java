@@ -5,6 +5,7 @@ import com.darknights.devigation.domain.category.command.domain.aggregate.entity
 import com.darknights.devigation.domain.category.command.domain.aggregate.vo.MemberVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 

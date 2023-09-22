@@ -26,7 +26,7 @@ public class UpdateCategoryService {
         Optional<Category> category = categoryRepository.findById(updateCategoryDTO.getId());
         if(category.isPresent()){
             Category updateCategory = category.get();
-            if(!updateCategoryDTO.getName().isEmpty()){
+            if(updateCategoryDTO.getName()!=null){
                 updateCategory.setName(updateCategoryDTO.getName());
             }
             if(updateCategoryDTO.getClassification()!=null){
