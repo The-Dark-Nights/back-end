@@ -82,12 +82,12 @@ public class PostReadTests {
     void findAllTest(CreatePostDTO postDTO1, CreatePostDTO postDTO2, CreatePostDTO postDTO3) {
         //given
         int beforeSize = findPostService.findAll().size();
-        Post post1 = createPostService.createPost(postDTO1);
-        Post post2 = createPostService.createPost(postDTO2);
-        Post post3 = createPostService.createPost(postDTO3);
-        postId_1 = post1.getId();
-        postId_2 = post2.getId();
-        postId_3 = post3.getId();
+        Post post_1 = createPostService.createPost(postDTO1);
+        Post post_2 = createPostService.createPost(postDTO2);
+        Post post_3 = createPostService.createPost(postDTO3);
+        postId_1 = post_1.getId();
+        postId_2 = post_2.getId();
+        postId_3 = post_3.getId();
 
         //when
         List<FindPostDTO> posts = findPostService.findAll();
@@ -97,6 +97,8 @@ public class PostReadTests {
         Assertions.assertNotNull(posts);
         Assertions.assertNotEquals(beforeSize, afterSize);
         Assertions.assertEquals(beforeSize + 3, afterSize);
+
+
     }
 
     @DisplayName("memberId 별 글 조회 테스트")
@@ -104,16 +106,16 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByMemberIdTest(CreatePostDTO postDTO1, CreatePostDTO postDTO2, CreatePostDTO postDTO3){
         //given
-        Post post1 = createPostService.createPost(postDTO1);
-        Post post2 = createPostService.createPost(postDTO2);
-        Post post3 = createPostService.createPost(postDTO3);
-        postId_1 = post1.getId();
-        postId_2 = post2.getId();
-        postId_3 = post3.getId();
-        Long member = post1.getMemberId().getId();
-        Long notMember = post3.getMemberId().getId();
+        Post post_1 = createPostService.createPost(postDTO1);
+        Post post_2 = createPostService.createPost(postDTO2);
+        Post post_3 = createPostService.createPost(postDTO3);
+        postId_1 = post_1.getId();
+        postId_2 = post_2.getId();
+        postId_3 = post_3.getId();
+        Long member = post_1.getMemberId().getId();
+        Long notMember = post_3.getMemberId().getId();
         //when
-        List<FindPostDTO> posts= findPostService.findByMemberId(post1.getMemberId().getId());
+        List<FindPostDTO> posts= findPostService.findByMemberId(post_1.getMemberId().getId());
 
         //then
         Assertions.assertNotNull(posts);
@@ -127,11 +129,11 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByIdTest(CreatePostDTO postDTO1){
         //given
-        Post post1 = createPostService.createPost(postDTO1);
-        postId_1 = post1.getId();
+        Post post_1 = createPostService.createPost(postDTO1);
+        postId_1 = post_1.getId();
 
         //when
-        FindPostDTO post = findPostService.findById(post1.getId());
+        FindPostDTO post = findPostService.findById(post_1.getId());
 
         //then
         Assertions.assertNotNull(post);
@@ -144,20 +146,20 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByTitle(CreatePostDTO postDTO1){
         //given
-        Post post1 = createPostService.createPost(postDTO1);
-        postId_1 = post1.getId();
+        Post post_1 = createPostService.createPost(postDTO1);
+        postId_1 = post_1.getId();
         String searchTitle_kr = "제목 1번";
 //        String searchTitle_en = "Title_1";
 
         String searchContent_kr ="내용 1번";
 //        String searchContent_en ="Content_1";
         //when
-        List<FindPostDTO> findPost1 = findPostService.findByTitle(searchTitle_kr);
-        List<FindPostDTO> findPost2 = findPostService.findByContent(searchContent_kr);
+        List<FindPostDTO> findPost_1 = findPostService.findByTitle(searchTitle_kr);
+        List<FindPostDTO> findPost_2 = findPostService.findByContent(searchContent_kr);
         //then
-        Assertions.assertNotNull(findPost1);
-        Assertions.assertNotNull(findPost2);
-        Assertions.assertEquals(findPost1.get(0).getId(), findPost2.get(0).getId());
+        Assertions.assertNotNull(findPost_1);
+        Assertions.assertNotNull(findPost_2);
+        Assertions.assertEquals(findPost_1.get(0).getId(), findPost_2.get(0).getId());
 
     }
 }
