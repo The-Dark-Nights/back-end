@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.darknights.devigation.domain.post.query.domain.repository.PostMapper">
+    <resultMap id="QueryPostMap" type="com.darknights.devigation.domain.post.query.application.dto.FindPostDTO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="memberId" column="member_id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="content" column="content"/>
+        <result property="created_date" column="createDate"/>
+        <result property="published" column="published"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="QueryPostMap">
+        SELECT *
+        FROM
+            POST_TB
+        WHERE published = 1
+    </select>
+
+    <select id="findByMemberId" resultMap="QueryPostMap">
+        SELECT *
+        FROM
+            POST_TB
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findById" resultMap="QueryPostMap">
+        SELECT *
+        FROM
+            POST_TB
+        WHERE id =#{id}
+    </select>
+
+    <select id="findByContent" resultMap="QueryPostMap">
+        SELECT *
+        FROM
+            POST_TB
+        WHERE content LIKE concat ('%', #{searchWord}, '%')
+    </select>
+
+    <select id="findByTitle" resultMap="QueryPostMap">
+        SELECT *
+        FROM
+            POST_TB
+        WHERE title LIKE concat ('%', #{searchWord}, '%')
+    </select>
+
+</mapper>

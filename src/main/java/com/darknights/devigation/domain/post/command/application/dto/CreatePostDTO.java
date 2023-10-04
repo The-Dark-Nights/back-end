@@ -13,4 +13,14 @@ public class CreatePostDTO {
     private Long categoryId;
     private String content;
     private boolean published;
+
+    public CreatePostDTO() {}
+
+    public CreatePostDTO(String title, Long memberId, Long categoryId, String content, boolean published) {
+        this.title = title;
+        this.memberId = memberId;
+        this.categoryId = categoryId;
+        this.content = content;
+        this.published = published;
+    }
 }
