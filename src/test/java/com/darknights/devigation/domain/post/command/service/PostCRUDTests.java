@@ -1,12 +1,15 @@
 package com.darknights.devigation.domain.post.command.service;
 
 import com.darknights.devigation.domain.post.command.application.dto.CreatePostDTO;
+import com.darknights.devigation.domain.post.command.application.dto.ResponsePostDTO;
 import com.darknights.devigation.domain.post.command.application.dto.UpdatePostDTO;
 import com.darknights.devigation.domain.post.command.application.service.CreatePostService;
 import com.darknights.devigation.domain.post.command.application.service.DeletePostService;
 import com.darknights.devigation.domain.post.command.application.service.UpdatePostService;
 import com.darknights.devigation.domain.post.command.domain.aggregate.entity.Post;
 import com.darknights.devigation.domain.post.command.domain.repository.PostRepository;
+import com.darknights.devigation.domain.post.query.application.service.FindPostService;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -32,6 +36,7 @@ public class PostCRUDTests {
 
     @Autowired
     private DeletePostService postDeleteService;
+
 
     @Autowired
     private PostRepository postRepository;
@@ -92,7 +97,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post resultPost = createPostService.createPost(post);
+        ResponsePostDTO resultPost = createPostService.createPost(post);
         // 삭제
         System.out.println("resultPost = " + resultPost);
         Assertions.assertNotNull(resultPost);
@@ -111,7 +116,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = createPostService.createPost(post);
+        ResponsePostDTO createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -143,7 +148,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = createPostService.createPost(post);
+        ResponsePostDTO createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -175,7 +180,7 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = createPostService.createPost(post);
+        ResponsePostDTO createPost = createPostService.createPost(post);
         // 수정전 값을 updatePostDTO에 담아서 update 메소드에 매개변수로 전달
         UpdatePostDTO updatePostDTO = new UpdatePostDTO(
                 createPost.getId(),
@@ -205,11 +210,12 @@ public class PostCRUDTests {
         post.setContent(contents);
         post.setPublished(published);
 
-        Post createPost = createPostService.createPost(post);
+        ResponsePostDTO createPost = createPostService.createPost(post);
 
         int deleteBeforeCount= (int) postRepository.count();
         postDeleteService.deletePost(createPost.getId());
         Assertions.assertEquals(postRepository.count(),deleteBeforeCount-1);
     }
+
 
 }

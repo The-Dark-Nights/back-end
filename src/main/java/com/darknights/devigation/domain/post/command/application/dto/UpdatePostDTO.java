@@ -27,6 +27,16 @@ public class UpdatePostDTO {
         this.published = published;
     }
 
+    public UpdatePostDTO(Long id, String title, Long memberId, Long categoryId, String content, LocalDateTime createdDate, boolean published) {
+        this.id = id;
+        this.title = title;
+        this.memberId = memberId;
+        this.categoryId = categoryId;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.published = published;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
