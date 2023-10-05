@@ -1,7 +1,7 @@
 package com.darknights.devigation.global.advice;
 
 
-import com.darknights.devigation.global.common.response.api.ApiResponse;
+import com.darknights.devigation.global.common.response.api.CustomApiResponse;
 import com.darknights.devigation.global.common.response.error.ErrorResponseBody;
 import com.darknights.devigation.global.common.response.error.ErrorResponse;
 import com.darknights.devigation.global.exception.BadRequestException;
@@ -28,7 +28,7 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.METHOD_NOT_ALLOWED.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
@@ -48,7 +48,7 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.BAD_REQUEST.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
@@ -68,7 +68,7 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.BAD_REQUEST.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
@@ -87,7 +87,7 @@ public class AuthControllerAdvice {
                 .setClasses(ex.getClass().getSimpleName());
 
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
@@ -106,7 +106,7 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.UNAUTHORIZED.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());
@@ -127,7 +127,7 @@ public class AuthControllerAdvice {
                 .setClasses(ex.getClass().getSimpleName());
 
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.FORBIDDEN.value())
                 .setMessage("API에 접근할 권한이 없습니다.")
                 .setTimestamp(LocalDateTime.now());
@@ -146,7 +146,7 @@ public class AuthControllerAdvice {
                 .setCode(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .setClasses(ex.getClass().getSimpleName());
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setMessage(ex.getLocalizedMessage())
                 .setTimestamp(LocalDateTime.now());

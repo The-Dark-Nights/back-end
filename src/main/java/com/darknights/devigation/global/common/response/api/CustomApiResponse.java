@@ -1,5 +1,6 @@
 package com.darknights.devigation.global.common.response.api;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,31 +8,31 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ApiResponse {
+@Data
+public class CustomApiResponse<T> {
     public int status;
     public String message;
-
     public LocalDateTime timestamp = LocalDateTime.now();
+    private T data;
+    public CustomApiResponse() {}
 
-    public ApiResponse() {}
-
-    public ApiResponse(int status, String message, LocalDateTime timestamp) {
-        this.status = status;
-        this.message = message;
-        this.timestamp = timestamp;
+    public CustomApiResponse(int status, String message, T data){
+        this.status=status;
+        this.message=message;
+        this.data=data;
     }
 
-    public ApiResponse setStatus(int status) {
+    public CustomApiResponse setStatus(int status) {
         this.status = status;
         return this;
     }
 
-    public ApiResponse setMessage(String message) {
+    public CustomApiResponse setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    public ApiResponse setTimestamp(LocalDateTime timestamp) {
+    public CustomApiResponse setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }

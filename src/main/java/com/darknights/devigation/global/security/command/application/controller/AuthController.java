@@ -1,7 +1,7 @@
 package com.darknights.devigation.global.security.command.application.controller;
 
 
-import com.darknights.devigation.global.common.response.api.ApiResponse;
+import com.darknights.devigation.global.common.response.api.CustomApiResponse;
 import com.darknights.devigation.global.security.command.application.dto.AuthResponse;
 import com.darknights.devigation.global.security.command.application.dto.AuthResponseBody;
 import com.darknights.devigation.global.security.command.application.service.IssueTokenService;
@@ -34,7 +34,7 @@ public class AuthController {
 
         String issuedToken = issueTokenService.issueTokenByAccessToken(accessToken);
 
-        ApiResponse apiResponse = new ApiResponse()
+        CustomApiResponse apiResponse = new CustomApiResponse()
                 .setStatus(HttpStatus.CREATED.value())
                 .setMessage("새로운 Access Token을 발급했습니다.")
                 .setTimestamp(LocalDateTime.now());

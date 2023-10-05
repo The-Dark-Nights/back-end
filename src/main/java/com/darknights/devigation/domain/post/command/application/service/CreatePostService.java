@@ -1,5 +1,6 @@
 package com.darknights.devigation.domain.post.command.application.service;
 
+import com.darknights.devigation.domain.post.command.application.dto.ResponsePostDTO;
 import com.darknights.devigation.domain.post.command.domain.aggregate.entity.Post;
 import com.darknights.devigation.domain.post.command.domain.aggregate.vo.CategoryVO;
 import com.darknights.devigation.domain.post.command.domain.aggregate.vo.MemberVO;
@@ -18,10 +19,22 @@ public class CreatePostService {
         this.postRepository=postRepository;
     }
 
-    public Post createPost(CreatePostDTO createPostDTO){
+    public ResponsePostDTO createPost(CreatePostDTO createPostDTO){
         MemberVO memberId = MemberVO.builder().memberId(createPostDTO.getMemberId()).build();
         CategoryVO categoryId=CategoryVO.builder().categoryId(createPostDTO.getCategoryId()).build();
 
-        return postRepository.save(new Post(createPostDTO.getTitle(),memberId,categoryId, createPostDTO.getContent(),createPostDTO.isPublished()));
+        Post post = postRepository.save(new Post(createPostDTO.getTitle(),memberId,categoryId, createPostDTO.getContent(),createPostDTO.isPublished()));
+
+        ResponsePostDTO postDTO = new ResponsePostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getMemberId().getId(),
+                post.getCategoryId().getId(),
+                post.getContent(),
+                post.getCreatedDate(),
+                post.isPublished()
+        );
+
+        return postDTO;
     }
 }
