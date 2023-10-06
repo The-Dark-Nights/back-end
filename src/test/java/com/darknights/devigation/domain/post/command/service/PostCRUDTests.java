@@ -124,7 +124,6 @@ public class PostCRUDTests {
                 createPost.getMemberId(),
                 createPost.getCategoryId(),
                 createPost.getContent(),
-                createPost.getCreatedDate(),
                 createPost.isPublished()
         );
         // title을 null값 혹은 빈 문자열로 전송 후 이전과 같은 지 확인
@@ -156,7 +155,6 @@ public class PostCRUDTests {
                 createPost.getMemberId(),
                 createPost.getCategoryId(),
                 createPost.getContent(),
-                createPost.getCreatedDate(),
                 createPost.isPublished()
         );
         // content를 다르게 한 후 값이 바뀌는지 확인
@@ -188,7 +186,6 @@ public class PostCRUDTests {
                 createPost.getMemberId(),
                 createPost.getCategoryId(),
                 createPost.getContent(),
-                createPost.getCreatedDate(),
                 createPost.isPublished()
         );
         // published를 false로 바꾼 후 게시날짜가 바뀌지 않는 것 확인
