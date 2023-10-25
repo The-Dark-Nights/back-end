@@ -27,7 +27,7 @@ public class Post {
     @Embedded
     private CategoryVO categoryId;
 
-    @Column(nullable = false, name = "content", columnDefinition = "MEDIUMTEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
     @CreatedDate
     @Column(name = "created_date")

@@ -37,6 +37,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    //swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
+    // 필기 SpringBoot 3.XX에서는 "org.springdoc:springdoc-openapi-starter-webmvc-ui" 사용해야함
+
+
     implementation 'org.springframework.boot:spring-boot-starter-test'
 
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'

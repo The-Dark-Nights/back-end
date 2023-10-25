@@ -1,6 +1,7 @@
 package com.darknights.devigation.domain.post.query.service;
 
 import com.darknights.devigation.domain.post.command.application.dto.CreatePostDTO;
+import com.darknights.devigation.domain.post.command.application.dto.ResponsePostDTO;
 import com.darknights.devigation.domain.post.command.application.service.CreatePostService;
 import com.darknights.devigation.domain.post.command.application.service.DeletePostService;
 import com.darknights.devigation.domain.post.command.domain.aggregate.entity.Post;
@@ -82,9 +83,9 @@ public class PostReadTests {
     void findAllTest(CreatePostDTO postDTO1, CreatePostDTO postDTO2, CreatePostDTO postDTO3) {
         //given
         int beforeSize = findPostService.findAll().size();
-        Post post_1 = createPostService.createPost(postDTO1);
-        Post post_2 = createPostService.createPost(postDTO2);
-        Post post_3 = createPostService.createPost(postDTO3);
+        ResponsePostDTO post_1 = createPostService.createPost(postDTO1);
+        ResponsePostDTO post_2 = createPostService.createPost(postDTO2);
+        ResponsePostDTO post_3 = createPostService.createPost(postDTO3);
         postId_1 = post_1.getId();
         postId_2 = post_2.getId();
         postId_3 = post_3.getId();
@@ -106,16 +107,16 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByMemberIdTest(CreatePostDTO postDTO1, CreatePostDTO postDTO2, CreatePostDTO postDTO3){
         //given
-        Post post_1 = createPostService.createPost(postDTO1);
-        Post post_2 = createPostService.createPost(postDTO2);
-        Post post_3 = createPostService.createPost(postDTO3);
+        ResponsePostDTO post_1 = createPostService.createPost(postDTO1);
+        ResponsePostDTO post_2 = createPostService.createPost(postDTO2);
+        ResponsePostDTO post_3 = createPostService.createPost(postDTO3);
         postId_1 = post_1.getId();
         postId_2 = post_2.getId();
         postId_3 = post_3.getId();
-        Long member = post_1.getMemberId().getId();
-        Long notMember = post_3.getMemberId().getId();
+        Long member = post_1.getMemberId();
+        Long notMember = post_3.getMemberId();
         //when
-        List<FindPostDTO> posts= findPostService.findByMemberId(post_1.getMemberId().getId());
+        List<FindPostDTO> posts= findPostService.findByMemberId(post_1.getMemberId());
 
         //then
         Assertions.assertNotNull(posts);
@@ -129,7 +130,7 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByIdTest(CreatePostDTO postDTO1){
         //given
-        Post post_1 = createPostService.createPost(postDTO1);
+        ResponsePostDTO post_1 = createPostService.createPost(postDTO1);
         postId_1 = post_1.getId();
 
         //when
@@ -146,7 +147,7 @@ public class PostReadTests {
     @MethodSource("createPost")
     void findByTitle(CreatePostDTO postDTO1){
         //given
-        Post post_1 = createPostService.createPost(postDTO1);
+        ResponsePostDTO post_1 = createPostService.createPost(postDTO1);
         postId_1 = post_1.getId();
         String searchTitle_kr = "제목 1번";
 //        String searchTitle_en = "Title_1";
