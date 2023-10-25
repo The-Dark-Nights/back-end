@@ -50,6 +50,10 @@ dependencies {
     implementation 'com.github.downgoon:marvin:1.5.5'
     implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
 
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.6'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.6.4'
+    testImplementation group: 'org.springdoc', name: 'springdoc-openapi-webmvc-core', version: '1.6.4'
+
 
 }
 
