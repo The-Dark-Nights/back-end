@@ -120,7 +120,7 @@ public class SecurityConfiguration {
                             "/api-docs", "/api-docs/**", "/v3/api-docs/**"
                             )
                             .antMatchers(
-                                "/login/**","/auth/**","/v1/post/**"
+                                "/login/**","/auth/**","/v1/post/**", "/test/**"
                             )
                 )
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
@@ -160,7 +160,7 @@ public class SecurityConfiguration {
                     .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                     .and()
                     .redirectionEndpoint()
-                        .baseUri("/oauth2/callback/*")
+                        .baseUri("/oauth2/callback/github")
                         .and()
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService)
