@@ -19,8 +19,8 @@ public class CreatePostService {
         this.postRepository=postRepository;
     }
 
-    public ResponsePostDTO createPost(CreatePostDTO createPostDTO){
-        MemberVO memberId = MemberVO.builder().memberId(createPostDTO.getMemberId()).build();
+    public ResponsePostDTO createPost(CreatePostDTO createPostDTO, Long memberIdDTO){
+        MemberVO memberId = MemberVO.builder().memberId(memberIdDTO).build();
         CategoryVO categoryId=CategoryVO.builder().categoryId(createPostDTO.getCategoryId()).build();
 
         Post post = postRepository.save(new Post(createPostDTO.getTitle(),memberId,categoryId, createPostDTO.getContent(),createPostDTO.isPublished()));
