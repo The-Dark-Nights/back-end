@@ -120,7 +120,7 @@ public class SecurityConfiguration {
                             "/api-docs", "/api-docs/**", "/v3/api-docs/**"
                             )
                             .antMatchers(
-                                "/login/**","/auth/**","/v1/post/**", "/test/**"
+                                "/login/**","/auth/**","/v1/post/**"
                             )
                 )
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
