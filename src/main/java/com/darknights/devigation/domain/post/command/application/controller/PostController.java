@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -52,7 +53,7 @@ public class PostController {
     })
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody CreatePostDTO createPostDTO,
-                                        @Parameter(hidden = true) @CurrentMember UserPrincipal userPrincipal) {
+                                        @Parameter(hidden = true) @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long memberId = userPrincipal.getId();
         ResponsePostDTO post = createPostService.createPost(createPostDTO, memberId);
         CustomApiResponse<ResponsePostDTO> response = new CustomApiResponse<>(HttpStatus.CREATED.value(), "saved successfully", post);

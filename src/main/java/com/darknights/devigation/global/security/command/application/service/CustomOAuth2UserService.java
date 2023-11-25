@@ -54,7 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         FindMemberDTO member = findMemberService.findByUID(attributes.getId());
         UserPrincipal oauthMember;
         if (member == null) {
-            CreateMemberDTO createMemberDTO = new CreateMemberDTO(attributes.getId(), attributes.getName(), Role.MEMBER, attributes.getImageUrl(), attributes.getEmail(), PlatformEnum.valueOf(provider.toUpperCase()));
+            CreateMemberDTO createMemberDTO = new CreateMemberDTO(attributes.getId(), attributes.getName(), Role.MEMBER,  attributes.getEmail(),attributes.getImageUrl(), PlatformEnum.valueOf(provider.toUpperCase()));
             Member newMember = createMemberService.create(createMemberDTO);
             oauthMember = UserPrincipal.create(newMember, attributes.getAttributes());
         } else {
