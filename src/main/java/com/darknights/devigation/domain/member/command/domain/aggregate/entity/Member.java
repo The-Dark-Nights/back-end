@@ -21,13 +21,13 @@ public class Member {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false, name = "email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(nullable = false, name = "uid")
     private String UID;
 
-    @Column(length = 300, name = "profile_image", nullable = false)
+    @Column(length = 300, name = "profile_image")
     private String profileImage;
 
     @Enumerated(EnumType.STRING)

@@ -120,7 +120,8 @@ public class SecurityConfiguration {
                             "/api-docs", "/api-docs/**", "/v3/api-docs/**"
                             )
                             .antMatchers(
-                                "/login/**","/auth/**","/v1/post/**"
+                                "/login/**","/auth/**"
+                                    // 여기는 filter를 거치지 않는 곳이기 때문에 여기에 uri를 허용하면 토큰 정보가 받아와지지 않는다.
                             )
                 )
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
@@ -149,7 +150,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                     .antMatchers("/oauth2/**")
                         .hasRole(Role.MEMBER.name())
-                    .antMatchers("/blog/**", "/member/**")
+                    .antMatchers("/blog/**", "/member/**", "/v1/post/**")
                         .permitAll()
                     .antMatchers("/admin/**")
                         .hasRole(Role.ADMIN.name())
@@ -160,7 +161,7 @@ public class SecurityConfiguration {
                     .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                     .and()
                     .redirectionEndpoint()
-                        .baseUri("/oauth2/callback/github")
+                        .baseUri("/oauth2/callback/*")
                         .and()
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService)

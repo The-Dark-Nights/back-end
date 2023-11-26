@@ -27,10 +27,10 @@ public class QueryMember {
     @Column(nullable = false, name = "uid")
     private String UID;
 
-    @Column(nullable = false, name = "email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(length = 300, name = "profile_image", nullable = false)
+    @Column(length = 300, name = "profile_image")
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
