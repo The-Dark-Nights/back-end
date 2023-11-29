@@ -10,21 +10,21 @@ import java.util.List;
 
 @Service
 public class UpdateRoadmapCategoryService {
-    private final CreateRoadmapCategoryService createRoadmapCategoryService;
-    private final DeleteRoadmapCategoryService deleteRoadmapCategoryService;
-
-
-    @Autowired
-    public UpdateRoadmapCategoryService(CreateRoadmapCategoryService createRoadmapCategoryService, DeleteRoadmapCategoryService deleteRoadmapCategoryService) {
-        this.createRoadmapCategoryService = createRoadmapCategoryService;
-        this.deleteRoadmapCategoryService = deleteRoadmapCategoryService;
-    }
-
-    @Transactional
-    public boolean updateRoadmapCategory(List<CreateNodeDTO> createNodeDTOS, List<CreateEdgeDTO> createEdgeDTOS, long roadmapId){
-        if(deleteRoadmapCategoryService.deleteRoadmapCategory(roadmapId)){
-            if(createRoadmapCategoryService.createRoadmapCategory(createNodeDTOS,createEdgeDTOS))return true;
-        }
-        return true;
-    }
+//    private final CreateRoadmapCategoryService createRoadmapCategoryService;
+//    private final DeleteRoadmapCategoryService deleteRoadmapCategoryService;
+//
+//
+//    @Autowired
+//    public UpdateRoadmapCategoryService(CreateRoadmapCategoryService createRoadmapCategoryService, DeleteRoadmapCategoryService deleteRoadmapCategoryService) {
+//        this.createRoadmapCategoryService = createRoadmapCategoryService;
+//        this.deleteRoadmapCategoryService = deleteRoadmapCategoryService;
+//    }
+//
+//    @Transactional
+//    public boolean updateRoadmapCategory(List<CreateNodeDTO> createNodeDTOS, List<CreateEdgeDTO> createEdgeDTOS, long roadmapId){
+//        if(deleteRoadmapCategoryService.deleteRoadmapCategory(roadmapId)){
+//            if(createRoadmapCategoryService.createRoadmapCategory(createNodeDTOS,createEdgeDTOS))return true;
+//        }
+//        return true;
+//    }
 }

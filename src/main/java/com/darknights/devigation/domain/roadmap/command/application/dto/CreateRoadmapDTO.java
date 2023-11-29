@@ -11,4 +11,9 @@ import lombok.ToString;
 public class CreateRoadmapDTO {
     private String title;
     private Long memberId;
+    private String roadmap;
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
 }

@@ -8,11 +8,11 @@ import com.darknights.devigation.domain.roadmap.command.domain.aggregate.entity.
 @DomainService
 public class RoadmapService {
     public Roadmap toRoadmapEntity(CreateRoadmapDTO createRoadmapDTO){
-        return new Roadmap(createRoadmapDTO.getTitle(),createRoadmapDTO.getMemberId());
+        return new Roadmap(createRoadmapDTO.getTitle(),createRoadmapDTO.getMemberId(), createRoadmapDTO.getRoadmap());
     }
 
     public Roadmap toRoadmapEntity(UpdateRoadmapDTO updateRoadmapDTO){
-        return new Roadmap(updateRoadmapDTO.getId(), updateRoadmapDTO.getTitle(),updateRoadmapDTO.getMemberId());
+        return new Roadmap(updateRoadmapDTO.getId(), updateRoadmapDTO.getTitle(),updateRoadmapDTO.getMemberId(),updateRoadmapDTO.getRoadmap());
     }
 
 }
