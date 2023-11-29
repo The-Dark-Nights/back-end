@@ -16,13 +16,13 @@ public class QueryRoadmapController {
         this.queryRoadmapService = queryRoadmapService;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{roadmapId}")
     public ResponseEntity<?> getRoadmap(@PathVariable Long roadmapId){
         return ResponseEntity.ok(queryRoadmapService.getRoadmapInfo(roadmapId));
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
     public ResponseEntity<?> getAllRoadmap(){
         return ResponseEntity.ok(queryRoadmapService.getAllRoadmap());

@@ -31,7 +31,7 @@ public class RoadmapController {
         this.deleteRoadmapService = deleteRoadmapService;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
     public ResponseEntity<?> createRoadmap(@CurrentMember UserPrincipal userPrincipal, @RequestBody CreateRoadmapDTO createRoadmapDTO){
         createRoadmapDTO.setMemberId(userPrincipal.getId());
