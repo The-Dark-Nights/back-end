@@ -150,7 +150,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                     .antMatchers("/oauth2/**")
                         .hasRole(Role.MEMBER.name())
-                    .antMatchers("/blog/**", "/member/**", "/v1/post/**")
+                    .antMatchers("/blog/**", "/member/**", "/v1/post/**", "/roadmap/**")
                         .permitAll()
                     .antMatchers("/admin/**")
                         .hasRole(Role.ADMIN.name())
