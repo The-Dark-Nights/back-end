@@ -31,6 +31,9 @@ public class Roadmap {
     @Embedded
     private MemberVO memberId;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String roadmap;
+
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
@@ -45,6 +48,13 @@ public class Roadmap {
         this.createdDate = LocalDateTime.now();
     }
 
+    public Roadmap(String title, Long memberId, String roadmap) {
+        this.title = title;
+        this.memberId = new MemberVO(memberId);
+        this.roadmap = roadmap;
+        this.createdDate = LocalDateTime.now();
+    }
+
     public Roadmap(long id, String title, MemberVO memberId, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
         this.title = title;
@@ -53,11 +63,12 @@ public class Roadmap {
         this.modifiedDate = modifiedDate;
     }
 
-    public Roadmap(long id, String title, long memberId, LocalDateTime modifiedDate) {
+    public Roadmap(long id, String title, long memberId, String roadmap) {
         this.id = id;
         this.title = title;
         this.memberId = new MemberVO(memberId);
-        this.modifiedDate = modifiedDate;
+        this.roadmap = roadmap;
+        this.modifiedDate = LocalDateTime.now();
     }
 
 
@@ -73,5 +84,9 @@ public class Roadmap {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public void setRoadmap(String roadmap) {
+        this.roadmap = roadmap;
     }
 }

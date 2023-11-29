@@ -3,8 +3,6 @@ package com.darknights.devigation.domain.roadmap.command.domain.service;
 import com.darknights.devigation.domain.roadmap.command.application.dto.CreateEdgeDTO;
 import com.darknights.devigation.domain.roadmap.command.application.dto.CreateNodeDTO;
 import com.darknights.devigation.global.common.annotation.DomainService;
-import com.darknights.devigation.domain.roadmap.command.domain.aggregate.entity.RoadmapEdge;
-import com.darknights.devigation.domain.roadmap.command.domain.aggregate.entity.RoadmapNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,13 +16,13 @@ import java.util.List;
 @DomainService
 public class RoadmapCategoryService {
 
-    public RoadmapNode toRoadmapNode(CreateNodeDTO createNodeDTO){
-        return new RoadmapNode(createNodeDTO.getRoadmapId(), createNodeDTO.getCategoryId(), createNodeDTO.getPosition());
-    }
-
-    public RoadmapEdge toRoadmapEdge(CreateEdgeDTO createEdgeDTO){
-        return new RoadmapEdge(createEdgeDTO.getRoadmapId(), createEdgeDTO.getEdgeId(), createEdgeDTO.getSourceCategory(), createEdgeDTO.getTargetCategory());
-    }
+//    public RoadmapNode toRoadmapNode(CreateNodeDTO createNodeDTO){
+//        return new RoadmapNode(createNodeDTO.getRoadmapId(), createNodeDTO.getCategoryId(), createNodeDTO.getPosition());
+//    }
+//
+//    public RoadmapEdge toRoadmapEdge(CreateEdgeDTO createEdgeDTO){
+//        return new RoadmapEdge(createEdgeDTO.getRoadmapId(), createEdgeDTO.getEdgeId(), createEdgeDTO.getSourceCategory(), createEdgeDTO.getTargetCategory());
+//    }
 
     public Pair<List<CreateNodeDTO>,List<CreateEdgeDTO>> jsonToDto(HashMap<String,String> param) throws ParseException {
         List<CreateNodeDTO> createNodeDTOS = new ArrayList<>();

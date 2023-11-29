@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.darknights.devigation.domain.roadmap.query.domain.repository.RoadmapMapper">
+    <resultMap id="QueryRoadmapMap" type="com.darknights.devigation.domain.roadmap.query.command.application.dto.QueryRoadmapDTO">
+        <id property="id" column="id" />
+        <result property="title" column="title"/>
+        <result property="roadmap" column="roadmap"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="modifiedDate" column="modified_date"/>
+        <result property="memberId" column="member_id"/>
+
+    </resultMap>
+
+    <select id="findRoadmapByRoadmapId" resultMap="QueryRoadmapMap">
+        SELECT *
+
+        FROM
+            ROADMAP_TB
+        WHERE
+            id = #{roadmapId}
+    </select>
+
+    <select id="findAllRoadmap" resultMap="QueryRoadmapMap">
+        SELECT *
+
+        FROM
+            ROADMAP_TB
+    </select>
+
+</mapper>

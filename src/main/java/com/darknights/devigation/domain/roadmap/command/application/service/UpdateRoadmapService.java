@@ -5,6 +5,7 @@ import com.darknights.devigation.domain.roadmap.command.domain.service.RoadmapSe
 import com.darknights.devigation.domain.roadmap.command.application.dto.UpdateRoadmapDTO;
 import com.darknights.devigation.domain.roadmap.command.domain.aggregate.entity.Roadmap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ public class    UpdateRoadmapService {
             Roadmap updateRoadmap = roadmap.get();
             if(!updateRoadmapDTO.getTitle().isEmpty()){
                 updateRoadmap.setTitle(updateRoadmapDTO.getTitle());
+            }
+            if(!updateRoadmapDTO.getRoadmap().isEmpty()){
+                updateRoadmap.setRoadmap(updateRoadmapDTO.getRoadmap());
             }
 
             updateRoadmap.setModifiedDate(LocalDateTime.now());
