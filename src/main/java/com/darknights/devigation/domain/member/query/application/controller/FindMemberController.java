@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +43,14 @@ public class FindMemberController {
         Long memberId = userPrincipal.getId();
 
         FindMemberDTO findMember = findMemberService.findById(memberId);
+
+        return ResponseEntity.ok()
+                .body(findMember);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FindMemberDTO> getOtherMember(@PathVariable Long id) {
+        FindMemberDTO findMember = findMemberService.findById(id);
 
         return ResponseEntity.ok()
                 .body(findMember);
