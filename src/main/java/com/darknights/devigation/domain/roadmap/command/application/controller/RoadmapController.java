@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 @RestController
-@RequestMapping("/roadmap")
+@RequestMapping("/v1/roadmap")
 public class RoadmapController {
 
     private final CreateRoadmapService createRoadmapService;

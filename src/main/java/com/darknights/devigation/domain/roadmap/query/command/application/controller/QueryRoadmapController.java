@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/roadmap")
+@RequestMapping("/v1/roadmap")
 public class QueryRoadmapController {
     private final QueryRoadmapService queryRoadmapService;
 
